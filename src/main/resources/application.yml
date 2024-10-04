@@ -9,5 +9,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/city_card_db
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true

@@ -19,7 +19,7 @@ public class TransactionController {
 	// localhost:9090/transaction/add-transaction
 	@GetMapping("/add-transaction")
 	public String addTransaction(){
-		transactionService.AddTransaction(1L, LocalDate.ofEpochDay(LocalDate.now().toEpochDay()), 15.0, TransitionType.RECHARGE, PaymentPoint.CENTRAL_OFFICE);
+		transactionService.AddTransaction(1L, LocalDate.now(), 15.0, TransitionType.RECHARGE, PaymentPoint.CENTRAL_OFFICE);
 		transactionService.AddTransaction(3L, LocalDate.now(), 20.0, TransitionType.RECHARGE, PaymentPoint.ONLINE);
 		return "Transaction added";
 	}

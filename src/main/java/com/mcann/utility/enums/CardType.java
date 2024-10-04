@@ -2,7 +2,7 @@ package com.mcann.utility.enums;
 
 // KART TİPLERİ
 public enum CardType {
-	STANDARD(),
+	STANDARD,
 	DISCOUNTED,
 	TEACHER,
 	STUDENT,

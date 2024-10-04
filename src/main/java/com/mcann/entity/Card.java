@@ -20,10 +20,11 @@ public class Card {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
+	Long userId;
 	String cardNumber;
 	Double balance;
 	LocalDate expiryDate;
-	Integer cvv;
+	String cvv;
 	@Enumerated(EnumType.STRING)
 	CardType cardType;
 }

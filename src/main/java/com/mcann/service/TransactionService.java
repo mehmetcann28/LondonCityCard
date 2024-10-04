@@ -24,6 +24,7 @@ public class TransactionService {
 				.amount(amount)
 				.transitionType(transitionType)
 				.paymentPoint(paymentPoint)
+				.transactionDate(transactionDate)
 				                             .build();
 		transactionRepository.save(transaction);
 	}

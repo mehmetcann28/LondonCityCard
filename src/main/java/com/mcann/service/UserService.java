@@ -15,9 +15,8 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 	
-	public void addUser(Long cardId, String firstName, String lastName, String email, String password, String phone, String address, String username, LocalDate birthday) {
+	public void addUser(String firstName, String lastName, String email, String password, String phone, String address, String username, LocalDate birthday) {
 		User user = User.builder()
-				.cardId(cardId)
 				.firstName(firstName)
 				.lastName(lastName)
 				.address(address)

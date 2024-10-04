@@ -22,9 +22,10 @@ public class CardService {
 		this.transactionRepository = transactionRepository;
 	}
 	
-	public void addCard(String cardNumber, Double balance, LocalDate expiryDate, Integer cvv, CardType cardType) {
+	public void addCard(Long userId,String cardNumber, Double balance, LocalDate expiryDate, String cvv, CardType cardType) {
 		Card card =
 				Card.builder()
+				    .userId(userId)
 				    .cardNumber(cardNumber)
 				    .balance(balance)
 				    .expiryDate(expiryDate).cvv(cvv).cardType(cardType).build();
