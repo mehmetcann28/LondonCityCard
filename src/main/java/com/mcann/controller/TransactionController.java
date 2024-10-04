@@ -20,7 +20,7 @@ public class TransactionController {
 	@GetMapping("/add-transaction")
 	public String addTransaction(){
 		transactionService.AddTransaction(1L, LocalDate.ofEpochDay(LocalDate.now().toEpochDay()), 15.0, TransitionType.RECHARGE, PaymentPoint.CENTRAL_OFFICE);
-		transactionService.AddTransaction(2L, LocalDate.now(), 20.0, TransitionType.RECHARGE, PaymentPoint.ONLINE);
+		transactionService.AddTransaction(3L, LocalDate.now(), 20.0, TransitionType.RECHARGE, PaymentPoint.ONLINE);
 		return "Transaction added";
 	}
 	
