@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	Long cardId;
-	Date transactionDate;
+	LocalDate transactionDate;
 	Double amount;
 	TransitionType transitionType;
 	PaymentPoint paymentPoint;
