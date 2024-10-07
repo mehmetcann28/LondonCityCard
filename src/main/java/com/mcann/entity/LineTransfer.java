@@ -2,20 +2,19 @@ package com.mcann.entity;
 
 import com.mcann.utility.enums.LineTransferType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @Table(name = "tbl_line_transfer")
-public class LineTransfer {
+public class LineTransfer extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;

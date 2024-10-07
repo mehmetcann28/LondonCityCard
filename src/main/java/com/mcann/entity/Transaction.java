@@ -1,29 +1,29 @@
 package com.mcann.entity;
 
-import com.mcann.utility.enums.PaymentPoint;
-import com.mcann.utility.enums.TransitionType;
+import com.mcann.utility.enums.PaymentType;
+import com.mcann.utility.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @Table(name = "tbl_transaction")
-public class Transaction {
+public class Transaction extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	Long cardId;
-	LocalDate transactionDate;
 	Double amount;
-	TransitionType transitionType;
-	PaymentPoint paymentPoint;
+	@Enumerated(EnumType.STRING)
+	TransactionType transactionType;
+	@Enumerated(EnumType.STRING)
+	PaymentType paymentType;
 	//TODO PARA YÜKLEME EKLENECEK
 }

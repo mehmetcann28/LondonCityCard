@@ -1,9 +1,7 @@
 package com.mcann.utility;
 
-import com.mcann.service.CardService;
-import com.mcann.service.TransactionService;
-import com.mcann.service.UserService;
-import com.mcann.utility.enums.CardType;
+import com.mcann.service.*;
+import com.mcann.utility.enums.*;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -14,18 +12,26 @@ import java.time.LocalDate;
 public class DataGenerator implements ApplicationRunner {
 	private final CardService cardService;
 	private final UserService userService;
-	private final TransactionService transactionService;
+	private final StationService stationService;
+	private final LineService lineService;
 	
-	public DataGenerator(CardService cardService, UserService userService, TransactionService transactionService) {
+	public DataGenerator(CardService cardService, UserService userService, StationService stationService, LineService lineService) {
 		this.cardService = cardService;
 		this.userService = userService;
-		this.transactionService = transactionService;
+		this.stationService = stationService;
+		this.lineService = lineService;
 	}
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		addCard();
-		addUser();
+//		addCard();
+//		addUser();
+//		balanceLoadCard();
+//		balanceDeductionCard();
+//		addStation();
+//		addLine();
+		firstUsageBalanceDeductionCard();
+		
 	}
 	public String addCard() {
 		cardService.addCard(1L,"1234 3214 9654 8523", 50.0, LocalDate.of(2025, 10, 10), "050", CardType.STANDARD);
@@ -39,5 +45,25 @@ public class DataGenerator implements ApplicationRunner {
 		userService.addUser("Ozkan","Sargin","o.sargin@gmail.com","123456","05356998877","Karadag","osargin",LocalDate.of(1991,02,14));
 		userService.addUser("Mehmet Can","Karahan","mcan@gmail.com","123456","05368254788","Istanbul","mcan",LocalDate.of(2000,06,19));
 		return "Kullanicilar eklendi";
+	}
+	
+	public String balanceLoadCard() throws Exception {
+		cardService.balanceLoadCard(1L,100d,PaymentType.CARD);
+		return "Para Yuklendi";
+	}
+	public String firstUsageBalanceDeductionCard() throws Exception {
+		cardService.firstUsageBalanceDeductionCard(2L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+		return "Bakiyenizden para harcandı";
+	}
+	
+	public String addStation(){
+		stationService.addStation("BeylikduzuSonDurak", "B-1", StationType.METROBUS,"Beylikduzu");
+		stationService.addStation("Avcilar","A-3", StationType.METROBUS,"Avcilar");
+		return "Metrobus duraklari eklendi";
+	}
+	
+	public String addLine(){
+		lineService.addLine("BeylikduzuSonDurak - Avcilar", "34A", VehicleType.METROBUS,1L,2L);
+		return "Metrobus duraklari eklendi";
 	}
 }

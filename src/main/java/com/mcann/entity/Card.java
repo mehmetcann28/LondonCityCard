@@ -2,27 +2,27 @@ package com.mcann.entity;
 
 import com.mcann.utility.enums.CardType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Data
 @Entity
 @Table(name = "tbl_card")
-public class Card {
+public class Card extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	Long userId;
 	String cardNumber;
-	Double balance;
+	@Builder.Default
+	Double balance = 0.0;
 	LocalDate expiryDate;
 	String cvv;
 	@Enumerated(EnumType.STRING)
