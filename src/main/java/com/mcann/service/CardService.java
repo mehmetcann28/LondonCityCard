@@ -2,8 +2,11 @@ package com.mcann.service;
 
 import com.mcann.entity.Card;
 import com.mcann.entity.CardUsage;
+import com.mcann.entity.Line;
 import com.mcann.entity.Transaction;
 import com.mcann.repository.CardRepository;
+import com.mcann.repository.CardUsageRepository;
+import com.mcann.repository.LineRepository;
 import com.mcann.repository.TransactionRepository;
 import com.mcann.utility.enums.CardType;
 import com.mcann.utility.enums.PaymentType;
@@ -21,12 +24,21 @@ public class CardService {
 	private final CardRepository cardRepository;
 	private final TransactionRepository transactionRepository;
 	private final Double standardFee = 20.0;
+	private final LineRepository lineRepository;
+	private final CardUsageRepository cardUsageRepository;
 	
-	public void addCard(Long userId, String cardNumber, Double balance, LocalDate expiryDate, String cvv,
+	public void addCard(Long userId, String cardNumber, Double balance, String cvv,
 	                    CardType cardType) {
+		LocalDate expiryDate = LocalDate.now().plusYears(cardType.getValidityYears());
 		Card card =
-				Card.builder().userId(userId).cardNumber(cardNumber).balance(balance).expiryDate(expiryDate).cvv(cvv)
-				    .cardType(cardType).build();
+				Card.builder()
+				    .userId(userId)
+				    .cardNumber(cardNumber)
+				    .balance(balance)
+				    .expiryDate(expiryDate)
+				    .cvv(cvv)
+				    .cardType(cardType)
+				    .build();
 		cardRepository.save(card);
 	}
 	
@@ -52,19 +64,32 @@ public class CardService {
 		return updatedCard;
 	}
 	
-	public Card firstUsageBalanceDeductionCard(Long cardId, PaymentType paymentType, TransitionType transitionType)
+	public Card firstUsageBalanceDeductionCard(Long cardId, Long lineId ,PaymentType paymentType)
 			throws Exception {
 		Card card = cardRepository.findById(cardId).orElseThrow(() -> new Exception("Kart bulunamadi"));
-		card.setBalance(card.getBalance() - card.getCardType().getDiscountRate() * standardFee);
+		Line line = lineRepository.findById(lineId).orElseThrow(() -> new Exception("Hat bilgisi bulunamadi"));
+		Double discountedFee = card.getCardType().getDiscountRate() * standardFee;
+		if (card.getBalance()<discountedFee) {
+			throw new Exception("Yetersiz bakiye. Lütfen kartınıza para yükleyin.");
+		}
+		card.setBalance(card.getBalance() - discountedFee);
 		Card updatedCard = cardRepository.save(card);
-		CardUsage cardUsage = new CardUsage();
-		cardUsage.setCardId(cardId);
-		cardUsage.setTransitionType(TransitionType.INITIAL_USAGE);
-		Transaction transaction = new Transaction();
-		transaction.setCardId(cardId);
-		transaction.setTransactionType(TransactionType.BALANCE_DEDUCTION);
-		transaction.setPaymentType(paymentType);
+		
+		Transaction transaction = Transaction.builder()
+				.cardId(cardId)
+				.amount(discountedFee)
+				.transactionType(TransactionType.BALANCE_DEDUCTION)
+				.paymentType(paymentType)
+				.build();
 		transactionRepository.save(transaction);
+		
+		CardUsage cardUsage = CardUsage.builder()
+				.cardId(cardId)
+				.transitionType(TransitionType.INITIAL_USAGE)
+				.transferTime(0)
+				.lineId(lineId)
+				.build();
+		cardUsageRepository.save(cardUsage);
 		return updatedCard;
 	}
 	

@@ -20,7 +20,6 @@ public class CardUsage extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	Long cardId;
-	VehicleType vehicleType;
 	Integer transferTime;
 	TransitionType transitionType;
 	Long lineId;

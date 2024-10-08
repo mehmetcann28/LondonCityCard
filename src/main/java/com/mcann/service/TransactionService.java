@@ -35,12 +35,4 @@ public class TransactionService {
 		return transactionRepository.findAll();
 	}
 	
-//	public void balanceLoadCard(Long cardId, Double amount, TransactionType transactionType, PaymentType paymentType) throws Exception {
-//		Card card = cardRepository.findById(cardId).orElseThrow(() -> new Exception("Kart bulunamadi"));
-//		card.setBalance(card.getBalance() + amount);
-//		transaction.setTransactionType(transactionType);
-//		transaction.setPaymentType(paymentType);
-//		transactionRepository.save(transaction);
-//
-//	}
 }
