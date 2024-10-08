@@ -24,6 +24,7 @@ public class User extends BaseEntity {
 	String password;
 	String phone;
 	String address;
+	@Column(length = 64, nullable = false)
 	String username;
 	LocalDate birthday;
 }

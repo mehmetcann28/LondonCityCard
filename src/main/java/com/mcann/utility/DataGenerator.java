@@ -24,12 +24,12 @@ public class DataGenerator implements ApplicationRunner {
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		addCard();
-		addUser();
+//		addCard();
+//		addUser();
 //		balanceLoadCard();
-		addStation();
-		addLine();
-//		firstUsageBalanceDeductionCard();
+//		addStation();
+//		addLine();
+		cardUsageBalanceDeductionCard();
 	}
 	public String addCard() {
 		cardService.addCard(1L,"1234 3214 9654 8523", 50.0,"050", CardType.STANDARD);
@@ -47,10 +47,16 @@ public class DataGenerator implements ApplicationRunner {
 	
 	public String balanceLoadCard() throws Exception {
 		cardService.balanceLoadCard(1L,100d,PaymentType.CARD);
+		cardService.balanceLoadCard(2L,50d,PaymentType.CARD);
 		return "Para Yuklendi";
 	}
-	public String firstUsageBalanceDeductionCard() throws Exception {
-		cardService.firstUsageBalanceDeductionCard(2L,1L, PaymentType.CARD);
+	public String cardUsageBalanceDeductionCard() throws Exception {
+		cardService.cardUsageBalanceDeductionCard(1L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+		cardService.cardUsageBalanceDeductionCard(1L,2L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(3L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+//		cardService.cardUsageBalanceDeductionCard(3L,2L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(3L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+//		cardService.cardUsageBalanceDeductionCard(3L,2L,PaymentType.CARD,TransitionType.TRANSFER);
 		return "Bakiyenizden para harcandı";
 	}
 	
@@ -61,7 +67,8 @@ public class DataGenerator implements ApplicationRunner {
 	}
 	
 	public String addLine(){
-		lineService.addLine(1L,2L,"34A",VehicleType.METROBUS);
+//		lineService.addLine(1L,2L,"34A",VehicleType.METROBUS);
+		lineService.addLine(2L,1L,"34B",VehicleType.METROBUS);
 		return "Metrobus hatti eklendi";
 	}
 }

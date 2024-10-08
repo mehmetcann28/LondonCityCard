@@ -24,7 +24,7 @@ public class LineService {
 				.map(Station::getStationName)
 				.orElse("Bitiş durağı bulunamadı");
 		
-		String lineName = startStationName + " " + endStationName;
+		String lineName = startStationName + " - " + endStationName;
 		Line line = Line.builder()
 		                .lineName(lineName)
 		                .lineCode(lineCode)

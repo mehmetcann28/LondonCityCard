@@ -1,5 +1,6 @@
 package com.mcann.service;
 
+import com.mcann.dto.request.RegisterRequestDto;
 import com.mcann.entity.User;
 import com.mcann.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,20 @@ public class UserService {
 	
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
+	}
+	
+	public User register(RegisterRequestDto dto){
+		return userRepository.save(User.builder()
+				                    .firstName(dto.getFirstName())
+				                    .lastName(dto.getLastName())
+				                    .address(dto.getAddress())
+				                    .email(dto.getEmail())
+				                    .username(dto.getUsername())
+				                    .password(dto.getPassword())
+				                       .phone(dto.getPhone())
+				                       .birthday(dto.getBirthday())
+				                    .build());
+		
 	}
 	
 }

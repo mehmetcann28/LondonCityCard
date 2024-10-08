@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
@@ -20,8 +21,7 @@ public class LineTransfer extends BaseEntity {
 	Long id;
 	Long firstCardUsageId;
 	Long nextCardUsageId;
-	Date lineTransferDate;
-	Double lineTransferAmount;
+	LocalDate lineTransferDate;
 	Integer lineTransferTime;
 	LineTransferType lineTransferType;
 }
