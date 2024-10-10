@@ -19,7 +19,6 @@ public class Card extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	Long userId;
 	String cardNumber;
 	@Builder.Default
 	Double balance = 0.0;

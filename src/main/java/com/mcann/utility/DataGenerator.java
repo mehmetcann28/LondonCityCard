@@ -29,12 +29,13 @@ public class DataGenerator implements ApplicationRunner {
 //		balanceLoadCard();
 //		addStation();
 //		addLine();
-		cardUsageBalanceDeductionCard();
+//		cardUsageBalanceDeductionCard();
 	}
 	public String addCard() {
-		cardService.addCard(1L,"1234 3214 9654 8523", 50.0,"050", CardType.STANDARD);
-		cardService.addCard(1L,"3214 3214 8546 8523", 70.0,"052", CardType.STUDENT);
-		cardService.addCard(2L,"8526 3214 3256 8523", 90.0,"054", CardType.ELDERLY);
+//		cardService.addCard(1L,"1234 3214 9654 8523", "050", CardType.STANDARD);
+//		cardService.addCard(1L,"3214 3214 8546 8523", "052", CardType.STUDENT);
+//		cardService.addCard(2L,"8526 3214 3256 8523", "054", CardType.ELDERLY);
+//		cardService.addCard(null,"1236 5478 9563 1234","561", CardType.STANDARD);
 		return "Card bilgileri eklendi.";
 	}
 	
@@ -67,7 +68,7 @@ public class DataGenerator implements ApplicationRunner {
 	}
 	
 	public String addLine(){
-//		lineService.addLine(1L,2L,"34A",VehicleType.METROBUS);
+		lineService.addLine(1L,2L,"34A",VehicleType.METROBUS);
 		lineService.addLine(2L,1L,"34B",VehicleType.METROBUS);
 		return "Metrobus hatti eklendi";
 	}

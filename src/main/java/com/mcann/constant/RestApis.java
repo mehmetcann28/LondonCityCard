@@ -11,12 +11,17 @@ public class RestApis {
 	
 	
 	public static final String USER = ROOT + "/user";
+	public static final String CARD = ROOT + "/card";
+	
 	
 	public static final String ADD = "/add";
 	public static final String FINDALL = "/find-all";
 	public static final String FINDBYID = "/find-by-id";
 	public static final String ADDUSER = "/add-user";
 	public static final String GETALLUSERS = "/get-all-users";
+	public static final String GETALLCARDS = "get-all-cards";
+	public static final String GETALLVWCARDS = "get-all-vw-cards";
+	public static final String POSTADDCARD = "post-add-card";
 	public static final String GETALLUSERF = "/get-all-user-f";
 	public static final String LOGIN = "/login";
 	public static final String CREATEUSER = "/merhaba-nasilsin-hadi-gel-kullanici-ol";

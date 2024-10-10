@@ -18,6 +18,7 @@ public class User extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
+	Long cardId;
 	String firstName;
 	String lastName;
 	String email;

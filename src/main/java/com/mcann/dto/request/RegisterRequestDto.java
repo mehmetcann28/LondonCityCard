@@ -21,10 +21,19 @@ public class RegisterRequestDto {
 	@NotEmpty
 	@Email
 	String email;
-	@NotNull
+	@NotNull(
+			message = "Bu alanı girmek zorunludur"
+	)
 	@NotEmpty
+	@Pattern(
+			message = "Şifre en az 6 en fazla 25 karakterden oluşmalıdır ve bir büyük bir küçük ve bir özel karakter" +
+			" bulunmak zorundadır.",
+			regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*!])(?=\\S+$).{8,}$"
+	)
 	String password;
-	@NotNull
+	@NotNull(
+			message = "Bu alanı girmek zorunludur"
+	)
 	@NotEmpty
 	String rePassword;
 	@NotNull
@@ -38,6 +47,6 @@ public class RegisterRequestDto {
 	@Size(min = 3, max = 64)
 	String username;
 	@NotNull
-//	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	LocalDate birthday;
 }

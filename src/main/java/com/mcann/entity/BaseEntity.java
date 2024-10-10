@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @Data
 @MappedSuperclass
-public class BaseEntity {
+public abstract class BaseEntity {
 	@Builder.Default
 	@Enumerated(EnumType.STRING)
 	State state = State.ACTIVE;

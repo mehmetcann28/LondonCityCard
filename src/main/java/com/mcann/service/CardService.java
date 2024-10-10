@@ -3,11 +3,13 @@ package com.mcann.service;
 import com.mcann.entity.*;
 import com.mcann.repository.*;
 import com.mcann.utility.enums.*;
+import com.mcann.views.VwCard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,16 +26,20 @@ public class CardService {
 	private final CardUsageRepository cardUsageRepository;
 	private final LineTransferRepository lineTransferRepository;
 	
-	public void addCard(Long userId, String cardNumber, Double balance, String cvv, CardType cardType) {
+	public void addCard(String cardNumber, String cvv, CardType cardType) {
 		LocalDate expiryDate = LocalDate.now().plusYears(cardType.getValidityYears());
 		Card card =
-				Card.builder().userId(userId).cardNumber(cardNumber).balance(balance).expiryDate(expiryDate).cvv(cvv)
+				Card.builder().cardNumber(cardNumber).expiryDate(expiryDate).cvv(cvv)
 				    .cardType(cardType).build();
 		cardRepository.save(card);
 	}
 	
 	public List<Card> getAllCards() {
 		return cardRepository.findAll();
+	}
+	
+	public List<VwCard> getAllVwCards() {
+		return cardRepository.getAllCard();
 	}
 	
 	public Card getCardById(Long id) {
