@@ -18,16 +18,22 @@ import java.util.List;
 public class TransactionService {
 	
 	private final TransactionRepository transactionRepository;
-	private final CardRepository cardRepository;
 	
-	
-	public void AddTransaction(Long cardId, Double amount, TransactionType transactionType ,PaymentType paymentType) {
+	public void balanceLoadCard (Long cardId, Double amount, PaymentType paymentType) {
 		Transaction transaction = Transaction.builder()
 				.cardId(cardId)
 				.amount(amount)
-				.transactionType(transactionType)
-				.paymentType(paymentType)
-				                             .build();
+				.transactionType(TransactionType.BALANCE_LOAD)
+				.paymentType(paymentType).build();
+		transactionRepository.save(transaction);
+	}
+	
+	public void balanceDeductionCard (Long cardId, Double amount, PaymentType paymentType) {
+		Transaction transaction = Transaction.builder()
+		                                     .cardId(cardId)
+		                                     .amount(amount)
+		                                     .transactionType(TransactionType.BALANCE_DEDUCTION)
+		                                     .paymentType(paymentType).build();
 		transactionRepository.save(transaction);
 	}
 	

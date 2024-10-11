@@ -4,9 +4,9 @@ package com.mcann.utility.enums;
 public enum CardType {
 	STANDARD(1,2),
 	DISCOUNTED(0,2),
-	TEACHER(0.4,1),
+	TEACHER(0.6,1),
 	STUDENT(0.5,1),
-	ELDERLY(0.4,5),
+	ELDERLY(0.6,5),
 	DISABLED(0,10);
 	
 	private final int validityYears;

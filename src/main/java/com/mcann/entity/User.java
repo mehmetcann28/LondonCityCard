@@ -1,11 +1,11 @@
 package com.mcann.entity;
 
+import com.mcann.utility.enums.CardType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -28,4 +28,6 @@ public class User extends BaseEntity {
 	@Column(length = 64, nullable = false)
 	String username;
 	LocalDate birthday;
+	@Enumerated(EnumType.STRING)
+	CardType cardType;
 }

@@ -6,7 +6,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -19,10 +18,12 @@ public class Card extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
+	@Column(nullable = false, unique = true)
 	String cardNumber;
 	@Builder.Default
 	Double balance = 0.0;
 	LocalDate expiryDate;
+	@Column(nullable = false, unique = true)
 	String cvv;
 	@Enumerated(EnumType.STRING)
 	CardType cardType;

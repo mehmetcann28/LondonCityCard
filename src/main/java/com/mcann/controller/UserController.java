@@ -5,6 +5,7 @@ import com.mcann.dto.request.RegisterRequestDto;
 import com.mcann.entity.User;
 import com.mcann.service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +14,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping(USER)
+@RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
-	public UserController(UserService userService) {
-		this.userService = userService;
-	}
 	
 	@GetMapping("/get-all-user")
 	public List<User> allUser() {

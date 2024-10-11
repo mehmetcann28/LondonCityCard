@@ -21,7 +21,7 @@ public class LineTransfer extends BaseEntity {
 	Long id;
 	Long firstCardUsageId;
 	Long nextCardUsageId;
-	LocalDate lineTransferDate;
-	Integer lineTransferTime;
+	Long lineTransferDate;
+	Long lineTransferTime;
 	LineTransferType lineTransferType;
 }

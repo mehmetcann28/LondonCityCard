@@ -1,8 +1,10 @@
 package com.mcann.service;
 
 import com.mcann.dto.request.RegisterRequestDto;
+import com.mcann.entity.Card;
 import com.mcann.entity.User;
 import com.mcann.repository.UserRepository;
+import com.mcann.utility.enums.CardType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
-	
-	public void addUser(String firstName, String lastName, String email, String password, String phone, String address, String username, LocalDate birthday) {
+	private final CardService cardService;
+	//TODO Turist geldi standart kart aldı bunun için user bilgileri istenmesin.
+	public User addUser(String firstName, String lastName, String email, String password, String phone,
+	                    String address, String username, LocalDate birthday,CardType cardType) {
+		Card card = cardService.addUserCard(cardType);
 		User user = User.builder()
 				.firstName(firstName)
 				.lastName(lastName)
@@ -24,8 +29,10 @@ public class UserService {
 				.username(username)
 				.password(password)
 				.phone(phone)
+				.cardId(card.getId())
+				.cardType(cardType)
 				        .build();
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 	
 	public List<User> getAllUsers() {
