@@ -12,17 +12,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LineService {
 	private final LineRepository lineRepository;
-	private final StationRepository stationRepository;
+	private final StationService stationService;
 	
 	public void addLine(Long startStationId, Long endStationId, String lineCode, VehicleType vehicleType) {
 		
-		String startStationName = stationRepository.findById(startStationId)
-				.map(Station::getStationName)
-				.orElse("Başlangıç durağı bulunamadı");
+		String startStationName = stationService.findById(startStationId);
 		
-		String endStationName = stationRepository.findById(endStationId)
-				.map(Station::getStationName)
-				.orElse("Bitiş durağı bulunamadı");
+		String endStationName = stationService.findById(endStationId);
 		
 		String lineName = startStationName + " - " + endStationName;
 		Line line = Line.builder()
@@ -33,6 +29,5 @@ public class LineService {
 						.startStationId(startStationId)
 						.build();
 		lineRepository.save(line);
-		//TODO LİNE NAME OTOMATİK DATABASE DEN GELSİN.
 	}
 }

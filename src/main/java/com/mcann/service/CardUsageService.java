@@ -14,7 +14,7 @@ public class CardUsageService {
 	private final CardUsageRepository cardUsageRepository;
 	
 	public Optional<CardUsage> findByCardId(Long cardId) {
-		return cardUsageRepository.findCardUsageByCardId(cardId, TransitionType.INITIAL_USAGE);
+		return cardUsageRepository.findCardUsageByCardId(cardId,TransitionType.INITIAL_USAGE);
 	}
 	
 	public void cardUsageBalanceDeduction(Long cardId,TransitionType transitionType,Long lineId) {
@@ -25,4 +25,6 @@ public class CardUsageService {
 				.lineId(lineId).build();
 		cardUsageRepository.save(cardusage);
 	}
+	
+	
 }

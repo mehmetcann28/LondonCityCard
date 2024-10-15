@@ -28,11 +28,11 @@ public class DataGenerator implements ApplicationRunner {
 //		addUser();
 //		balanceLoadCard();
 //		addStation();
-//		addLine();
-		cardUsageBalanceDeductionCard();
+		addLine();
+//		cardUsageBalanceDeductionCard();
 	}
 	public String addCard() {
-		cardService.addCard(CardType.STANDARD);
+		cardService.addCard(CardType.TEACHER);
 //		cardService.addCard(1L,"1234 3214 9654 8523", "050", CardType.STANDARD);
 //		cardService.addCard(1L,"3214 3214 8546 8523", "052", CardType.STUDENT);
 //		cardService.addCard(2L,"8526 3214 3256 8523", "054", CardType.ELDERLY);
@@ -51,26 +51,26 @@ public class DataGenerator implements ApplicationRunner {
 	}
 	
 	public String balanceLoadCard() throws Exception {
-		cardService.balanceLoadCard(1L,250d,PaymentType.CASH);
-		cardService.balanceLoadCard(2L,500d,PaymentType.CASH);
-		cardService.balanceLoadCard(3L,100d,PaymentType.CASH);
-		cardService.balanceLoadCard(4L,100d,PaymentType.CASH);
+		cardService.balanceLoadCard(100L,250d,PaymentType.CASH);
+//		cardService.balanceLoadCard(2L,500d,PaymentType.CASH);
+//		cardService.balanceLoadCard(3L,100d,PaymentType.CASH);
+//		cardService.balanceLoadCard(4L,100d,PaymentType.CASH);
 		return "Para Yuklendi";
 	}
 	public String cardUsageBalanceDeductionCard() throws Exception {
-		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.FIRST_TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(3L,5L,PaymentType.CARD,TransitionType.TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(1L,6L,PaymentType.CARD,TransitionType.TRANSFER);
-		cardService.cardUsageBalanceDeductionCard(2L,6L,PaymentType.CARD,TransitionType.TRANSFER);
-		cardService.cardUsageBalanceDeductionCard(2L,5L,PaymentType.CARD,TransitionType.TRANSFER);
-		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(2L,6L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(2L,5L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(1L,1L,PaymentType.CARD,TransitionType.TRANSFER);
 		
-//		cardService.cardUsageBalanceDeductionCard(3L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
-//		cardService.cardUsageBalanceDeductionCard(3L,2L,PaymentType.CARD,TransitionType.TRANSFER);
-//		cardService.cardUsageBalanceDeductionCard(3L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
-//		cardService.cardUsageBalanceDeductionCard(3L,2L,PaymentType.CARD,TransitionType.TRANSFER);
+		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+		cardService.cardUsageBalanceDeductionCard(2L,2L,PaymentType.CARD,TransitionType.TRANSFER);
+		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
+		cardService.cardUsageBalanceDeductionCard(2L,5L,PaymentType.CARD,TransitionType.TRANSFER);
 		return "Bakiyenizden para harcandı";
 	}
 	
@@ -85,11 +85,11 @@ public class DataGenerator implements ApplicationRunner {
 	}
 	
 	public String addLine(){
-		lineService.addLine(1L,2L,"34A",VehicleType.METROBUS);
-		lineService.addLine(2L,1L,"34B",VehicleType.METROBUS);
-		lineService.addLine(3L,4L,"32A",VehicleType.BUS);
-		lineService.addLine(5L,4L,"336E",VehicleType.BUS);
-		lineService.addLine(6L,5L,"36KE",VehicleType.BUS);
+		lineService.addLine(100L,500L,"34A",VehicleType.METROBUS);
+//		lineService.addLine(2L,1L,"34B",VehicleType.METROBUS);
+//		lineService.addLine(3L,4L,"32A",VehicleType.BUS);
+//		lineService.addLine(5L,4L,"336E",VehicleType.BUS);
+//		lineService.addLine(6L,5L,"36KE",VehicleType.BUS);
 		return "Metrobus hatti eklendi";
 	}
 }

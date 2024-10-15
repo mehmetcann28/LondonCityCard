@@ -7,6 +7,7 @@ import com.mcann.repository.TransactionRepository;
 import com.mcann.utility.enums.PaymentType;
 import com.mcann.utility.enums.TransactionType;
 import com.mcann.utility.enums.TransitionType;
+import com.mcann.views.VwTransaction;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,10 @@ public class TransactionService {
 	
 	public List<Transaction> GetAllTransactions() {
 		return transactionRepository.findAll();
+	}
+	
+	public List<VwTransaction> getAllVwTransactions() {
+		return transactionRepository.getAllTransactions();
 	}
 	
 }

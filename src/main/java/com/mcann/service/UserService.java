@@ -1,11 +1,16 @@
 package com.mcann.service;
 
 import com.mcann.dto.request.RegisterRequestDto;
+import com.mcann.dto.request.UpdateUserProfileRequestDto;
 import com.mcann.entity.Card;
 import com.mcann.entity.User;
 import com.mcann.repository.UserRepository;
 import com.mcann.utility.enums.CardType;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+
 public class UserService {
 	private final UserRepository userRepository;
 	private final CardService cardService;
@@ -51,6 +57,16 @@ public class UserService {
 				                       .birthday(dto.getBirthday())
 				                    .build());
 		
+	}
+	
+//	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+	@Mappings({
+			@Mapping(source = "isim",target = "firstName"),
+			@Mapping(source = "soyisim", target = "lastName"),
+			
+	})
+	public User update(UpdateUserProfileRequestDto dto){
+	
 	}
 	
 }

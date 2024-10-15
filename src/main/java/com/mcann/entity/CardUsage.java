@@ -21,6 +21,7 @@ public class CardUsage extends BaseEntity {
 	Long id;
 	Long cardId;
 	Integer transferTime;
+	@Enumerated(EnumType.STRING)
 	TransitionType transitionType;
 	Long lineId;
 }

@@ -1,7 +1,10 @@
 package com.mcann.service;
-
+import static com.mcann.utility.Constant.*;
 import com.mcann.entity.*;
+import com.mcann.exception.ErrorType;
+import com.mcann.exception.LondonCityCardException;
 import com.mcann.repository.*;
+import com.mcann.utility.Constant;
 import com.mcann.utility.enums.*;
 import com.mcann.views.VwCard;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,10 +20,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CardService {
 	private final CardRepository cardRepository;
-	private final Double standardFee = 20.0;
-	private final Double firstTransferFee = standardFee - (standardFee * 0.29);
-	private final Double secondTransferFee = firstTransferFee - (firstTransferFee * 0.29);
-	private final Double thirdTransferFee = secondTransferFee - (secondTransferFee * 0.29);
 	private final TransactionService transactionService;
 	private final CardUsageService cardUsageService;
 	private final LineTransferService lineTransferService;
@@ -41,7 +39,7 @@ public class CardService {
 	
 	public Card addCard(CardType cardType) {
 		if (cardType != CardType.STANDARD) {
-			throw new IllegalArgumentException("Bu kart tipi için kullanıcı kaydı gereklidir.");
+			throw new LondonCityCardException(ErrorType.INVALIDCARDTYPE_EXCEPTION);
 		}
 		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
 		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
@@ -75,10 +73,14 @@ public class CardService {
 		return cardRepository.findById(id).orElse(null);
 	}
 	
-	public Card balanceLoadCard(Long cardId, Double amount, PaymentType paymentType) throws Exception {
-		Card card = cardRepository.findById(cardId).orElseThrow(() -> new Exception("Kart bulunamadi"));
-		card.setBalance(card.getBalance() + amount);
-		Card updatedCard = cardRepository.save(card);
+	public Card balanceLoadCard(Long cardId, Double amount, PaymentType paymentType) {
+		Optional<Card> card = cardRepository.findById(cardId);
+		if (!card.isPresent()) {
+			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
+		}
+		Card cardValue = card.get();
+		cardValue.setBalance(cardValue.getBalance() + amount);
+		Card updatedCard = cardRepository.save(cardValue);
 		
 		transactionService.balanceLoadCard(cardId, amount, paymentType);
 		
@@ -86,17 +88,18 @@ public class CardService {
 	}
 	
 	public Card cardUsageBalanceDeductionCard(Long cardId, Long lineId, PaymentType paymentType,
-	                                          TransitionType transitionType)
-			throws Exception {
-		Card card = cardRepository.findById(cardId).orElseThrow(() -> new Exception("Kart bulunamadi"));
-		Double fee = calculateFee(card, transitionType);
-		System.out.println("Calculated fee for transitionType: " + transitionType + " is " + fee);
-		if (card.getBalance() < fee) {
-			throw new Exception("Yetersiz bakiye. Lütfen kartınıza para yükleyin.");
+	                                          TransitionType transitionType) {
+		Optional<Card> card = cardRepository.findById(cardId);
+		if (!card.isPresent()) {
+			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
 		}
-		card.setBalance(card.getBalance() - fee);
-		Card updatedCard = cardRepository.save(card);
-		
+		Card cardValue = card.get();
+		Double fee = calculateFee(cardValue, transitionType);
+		if (cardValue.getBalance() < fee) {
+			throw new LondonCityCardException(ErrorType.YETERSIZ_BAKIYE_HATASI);
+		}
+		cardValue.setBalance(cardValue.getBalance() - fee);
+		Card updatedCard = cardRepository.save(cardValue);
 		transactionService.balanceDeductionCard(cardId,fee,paymentType);
 		
 		if (transitionType == TransitionType.TRANSFER) {
@@ -106,11 +109,11 @@ public class CardService {
 			if (lastInitialUsageOpt.isPresent()) {
 				CardUsage lastInitialUsage = lastInitialUsageOpt.get();
 				//Geçen süreyi hesaplama dk cinsinden
-				long currentMillis = System.currentTimeMillis();
-				long lastUsageMillis = lastInitialUsage.getCreateAt().atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
-				long millisecondsBetween = currentMillis - lastUsageMillis;
-				if (millisecondsBetween < 3600000) {
-					lineTransferService.handleTransfer(lastInitialUsage.getId(), card, lineId);
+				Long minutesBetween =
+						Duration.between(lastInitialUsage.getCreateAt().atStartOfDay(), LocalDate.now().atStartOfDay())
+						        .toMinutes();
+				if (minutesBetween < 60) {
+					lineTransferService.handleTransfer(lastInitialUsage.getId(), cardValue, lineId);
 				}
 			}
 		}
@@ -123,26 +126,26 @@ public class CardService {
 	private Double calculateFee(Card card, TransitionType transitionType) {
 		if (transitionType == TransitionType.INITIAL_USAGE) {
 			// Eğer kullanım tipi INITIAL_USAGE ise standardFee üzerinden hesapla
-			return standardFee * card.getCardType().getDiscountRate();
+			return STANDARTFEE * card.getCardType().getDiscountRate();
 		} else if (transitionType == TransitionType.TRANSFER) {
 			// Eğer kullanım tipi TRANSFER ise transfer ücreti üzerinden hesapla
 			LineTransferType lineTransferType = lineTransferService.determineTransferType(card.getId());
 			return calculateTransferFee(card, lineTransferType);
 		} else {
-			throw new IllegalArgumentException("Geçersiz TransitionType: " + transitionType);
+			throw new LondonCityCardException(ErrorType.TRANSITION_NOT_FOUND);
 		}
 	}
 	
 	private Double calculateTransferFee(Card card, LineTransferType lineTransferType) {
 		switch (lineTransferType) {
 			case FIRST_TRANSFER:
-				return firstTransferFee;
+				return FIRSTTRANSFERFEE;
 			case SECOND_TRANSFER:
-				return secondTransferFee;
+				return SECONDTRANSFERFEE;
 			case THIRD_TRANSFER:
-				return thirdTransferFee;
+				return THIRDTRANSFERFEE;
 			default:
-				return thirdTransferFee;
+				return THIRDTRANSFERFEE;
 		}
 	}
 	

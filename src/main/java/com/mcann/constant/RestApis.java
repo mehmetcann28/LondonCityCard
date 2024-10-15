@@ -12,6 +12,8 @@ public class RestApis {
 	
 	public static final String USER = ROOT + "/user";
 	public static final String CARD = ROOT + "/card";
+	public static final String TRANSACTION = ROOT + "/transaction";
+	
 	
 	
 	public static final String ADD = "/add";
@@ -29,4 +31,6 @@ public class RestApis {
 	public static final String FINDALLBYUSERNAME = "/find-all-by-user-name";
 	public static final String FINDBYUSERID = "/find-by-id";
 	public static final String REGISTER = "/register";
+	public static final String GETCARDUSAGE = "/get-card-usage";
+	public static final String GETALLTRANSACTION = "/get-all-transaction";
 }
