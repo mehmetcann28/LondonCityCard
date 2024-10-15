@@ -4,12 +4,13 @@ import com.mcann.dto.request.RegisterRequestDto;
 import com.mcann.dto.request.UpdateUserProfileRequestDto;
 import com.mcann.entity.Card;
 import com.mcann.entity.User;
+import com.mcann.exception.ErrorType;
+import com.mcann.exception.LondonCityCardException;
 import com.mcann.mapper.UserMapper;
 import com.mcann.repository.UserRepository;
 import com.mcann.utility.enums.CardType;
+import com.mcann.views.VwUser;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -44,18 +45,23 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
+	public List<VwUser> getAllVwUser() {
+		return userRepository.getAllVwUsers();
+	}
+	
 	public void register(RegisterRequestDto dto){
 		userRepository.save(UserMapper.INSTANCE.registerUser(dto));
 	}
 	
 //	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-	/*@Mappings({
-			@Mapping(source = "isim",target = "firstName"),
-			@Mapping(source = "soyisim", target = "lastName"),
-			
-	})
+//	@Mappings({
+//			@Mapping(source = "isim",target = "firstName"),
+//			@Mapping(source = "soyisim", target = "lastName"),
+//	})
 	public User update(UpdateUserProfileRequestDto dto){
-	
-	}*/
+		User user = userRepository.findById(dto.id())
+		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
+		return userRepository.save(UserMapper.INSTANCE.updateUser(dto, user));
+	}
 	
 }

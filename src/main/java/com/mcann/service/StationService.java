@@ -1,6 +1,7 @@
 package com.mcann.service;
 
 import com.mcann.dto.request.AddStationRequestDto;
+import com.mcann.entity.Line;
 import com.mcann.entity.Station;
 import com.mcann.exception.ErrorType;
 import com.mcann.exception.LondonCityCardException;
@@ -33,9 +34,8 @@ public class StationService {
 		return stationName;
 	}
 	
-	public boolean findByName(String name) {
+	public Long findByName(String name) {
 		return stationRepository.findByStationName(name);
-		
 	}
 	
 	public List<Station> findAll() {

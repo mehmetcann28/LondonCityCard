@@ -1,34 +1,37 @@
 package com.mcann.dto.request;
 
-import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Data
-public class UpdateUserProfileRequestDto {
-//	@NotNull
-	Long id;
-//	@NotNull
-//	@Size(min = 2, max = 50)
-	String isim;
-//	@NotNull
-//	@Size(min = 2, max = 50)
-	String soyisim;
-//	@Email
-	String email;
-//	@NotEmpty
-//	@Size(min = 8, max = 64)
-//	@Pattern(
-//			message = "Şifreniz en az 8 en fazla 64 karakter olmalı, Şirenizde En az Bir büyük bir küçük harf ve özel karakter olmalıdır.",
-//			regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*!])(?=\\S+$).{8,}$"
-//	)
-	String phone;
-	String address;
-//	@NotNull
-	String username;
+public record UpdateUserProfileRequestDto(
+		Long id,
+		@Size(min = 2, max = 50)
+		String firstName,
+		@Size(min = 2, max = 50)
+		String lastName,
+		@Email
+		String email,
+		@NotEmpty
+		@Pattern(
+				regexp = "^\\+?[0-9. ()-]{7,25}$",
+				message = "Geçerli bir telefon numarası giriniz")
+		String phone,
+		@Size(min = 10, max = 105)
+		String address,
+		@Size(min = 3, max = 64)
+		String username,
+		@NotEmpty(
+				message = "Bu alanı girmek zorunludur"
+		)
+		@Pattern(
+				message = "Şifre en az 6 en fazla 25 karakterden oluşmalıdır ve bir büyük bir küçük ve bir özel " +
+						"karakter" + " bulunmak zorundadır.",
+				regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=*!])(?=\\S+$).{8,}$")
+		String password,
+		@NotEmpty(
+				message = "Bu alanı girmek zorunludur")
+		String rePassword
+) {
 }

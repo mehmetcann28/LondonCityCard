@@ -13,10 +13,13 @@ public class RestApis {
 	public static final String USER = ROOT + "/user";
 	public static final String CARD = ROOT + "/card";
 	public static final String STATION = ROOT + "/station";
+	public static final String LINE = ROOT + "/line";
 	public static final String TRANSACTION = ROOT + "/transaction";
 	
-	
+	public static final String ADD = "/add";
 	public static final String FINDALL = "/find-all";
+	public static final String FINDALLRESPONSE = "/find-all-response";
+	public static final String UPDATE = "/update";
 	public static final String FINDBYID = "/find-by-id";
 	public static final String ADDUSER = "/add-user";
 	public static final String GETALLUSERS = "/get-all-users";
