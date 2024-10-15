@@ -12,25 +12,22 @@ public class RestApis {
 	
 	public static final String USER = ROOT + "/user";
 	public static final String CARD = ROOT + "/card";
+	public static final String STATION = ROOT + "/station";
 	public static final String TRANSACTION = ROOT + "/transaction";
 	
 	
-	
-	public static final String ADD = "/add";
 	public static final String FINDALL = "/find-all";
 	public static final String FINDBYID = "/find-by-id";
 	public static final String ADDUSER = "/add-user";
 	public static final String GETALLUSERS = "/get-all-users";
+	public static final String GETALL = "/get-all-users";
 	public static final String GETALLCARDS = "get-all-cards";
 	public static final String GETALLVWCARDS = "get-all-vw-cards";
 	public static final String POSTADDCARD = "post-add-card";
-	public static final String GETALLUSERF = "/get-all-user-f";
-	public static final String LOGIN = "/login";
-	public static final String CREATEUSER = "/merhaba-nasilsin-hadi-gel-kullanici-ol";
-	public static final String FINDBYNAME = "/find-by-name";
 	public static final String FINDALLBYUSERNAME = "/find-all-by-user-name";
 	public static final String FINDBYUSERID = "/find-by-id";
 	public static final String REGISTER = "/register";
+	public static final String ADDSTATION = "/add-station";
 	public static final String GETCARDUSAGE = "/get-card-usage";
 	public static final String GETALLTRANSACTION = "/get-all-transaction";
 }

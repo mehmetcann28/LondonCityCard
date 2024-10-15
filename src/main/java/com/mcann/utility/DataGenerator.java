@@ -28,7 +28,7 @@ public class DataGenerator implements ApplicationRunner {
 //		addUser();
 //		balanceLoadCard();
 //		addStation();
-		addLine();
+//		addLine();
 //		cardUsageBalanceDeductionCard();
 	}
 	public String addCard() {
@@ -74,22 +74,22 @@ public class DataGenerator implements ApplicationRunner {
 		return "Bakiyenizden para harcandı";
 	}
 	
-	public String addStation(){
-		stationService.addStation("BeylikduzuSonDurak", "B-1", StationType.METROBUS,"Beylikduzu");
-		stationService.addStation("Avcilar","A-3", StationType.METROBUS,"Avcilar");
-		stationService.addStation("Cevatpaşa","C-1",StationType.BUS,"Bayrampasa");
-		stationService.addStation("Eminönü","E-1",StationType.BUS,"Fatih");
-		stationService.addStation("Bereç","B-2",StationType.BUS,"Gaziosmanpaşa");
-		stationService.addStation("Vezneciler","V-1",StationType.BUS,"Fatih");
-		return "Metrobus duraklari eklendi";
-	}
+//	public String addStation(){
+//		stationService.addStation("BeylikduzuSonDurak", "B-1", StationType.METROBUS,"Beylikduzu");
+//		stationService.addStation("Avcilar","A-3", StationType.METROBUS,"Avcilar");
+//		stationService.addStation("Cevatpaşa","C-1",StationType.BUS,"Bayrampasa");
+//		stationService.addStation("Eminönü","E-1",StationType.BUS,"Fatih");
+//		stationService.addStation("Bereç","B-2",StationType.BUS,"Gaziosmanpaşa");
+//		stationService.addStation("Vezneciler","V-1",StationType.BUS,"Fatih");
+//		return "Metrobus duraklari eklendi";
+//	}
 	
-	public String addLine(){
-		lineService.addLine(100L,500L,"34A",VehicleType.METROBUS);
-//		lineService.addLine(2L,1L,"34B",VehicleType.METROBUS);
-//		lineService.addLine(3L,4L,"32A",VehicleType.BUS);
-//		lineService.addLine(5L,4L,"336E",VehicleType.BUS);
-//		lineService.addLine(6L,5L,"36KE",VehicleType.BUS);
-		return "Metrobus hatti eklendi";
-	}
+//	public String addLine(){
+//		lineService.addLine(100L,500L,"34A",VehicleType.METROBUS);
+////		lineService.addLine(2L,1L,"34B",VehicleType.METROBUS);
+////		lineService.addLine(3L,4L,"32A",VehicleType.BUS);
+////		lineService.addLine(5L,4L,"336E",VehicleType.BUS);
+////		lineService.addLine(6L,5L,"36KE",VehicleType.BUS);
+//		return "Metrobus hatti eklendi";
+//	}
 }

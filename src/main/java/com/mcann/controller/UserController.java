@@ -1,8 +1,12 @@
 package com.mcann.controller;
 
 import static com.mcann.constant.RestApis.*;
+
 import com.mcann.dto.request.RegisterRequestDto;
+import com.mcann.dto.response.BaseResponse;
 import com.mcann.entity.User;
+import com.mcann.exception.ErrorType;
+import com.mcann.exception.LondonCityCardException;
 import com.mcann.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,18 +21,31 @@ import java.util.List;
 public class UserController {
 	private final UserService userService;
 	
-	@GetMapping("/get-all-user")
-	public List<User> allUser() {
-		return userService.getAllUsers();
+	@PostMapping(REGISTER)
+	public ResponseEntity<BaseResponse<Boolean>> register(@RequestBody RegisterRequestDto dto){
+		if (!dto.password().equals(dto.rePassword())){
+			throw new LondonCityCardException(ErrorType.INVALID_PASSWORD);
+		}
+		userService.register(dto);
+		return ResponseEntity.ok(
+				BaseResponse.<Boolean>builder()
+				            .code(200)
+				            .success(true)
+				            .message("Kayıt başarıyla gerçekleştirildi.")
+				            .data(true)
+				            .build()
+		);
 	}
 	
-	@PostMapping(REGISTER)
-	public ResponseEntity<User> register(@RequestBody @Valid RegisterRequestDto dto){
-		if (!dto.getPassword().equals(dto.getRePassword())){
-			ResponseEntity.badRequest().body(null);
-		}
-		User user = userService.register(dto);
-		return ResponseEntity.ok(user);
+	@GetMapping(FINDALL)
+	public ResponseEntity<BaseResponse<List<User>>> allUser() {
+		return ResponseEntity.ok(BaseResponse.<List<User>>builder()
+		                                     .success(true)
+		                                     .data(userService.getAllUsers())
+		                                     .code(200)
+		                                     .message("Kullanıcılar başarıyla listelendi")
+		                                     .build()
+		);
 	}
 	
 }

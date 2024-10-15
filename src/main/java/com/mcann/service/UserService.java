@@ -4,13 +4,12 @@ import com.mcann.dto.request.RegisterRequestDto;
 import com.mcann.dto.request.UpdateUserProfileRequestDto;
 import com.mcann.entity.Card;
 import com.mcann.entity.User;
+import com.mcann.mapper.UserMapper;
 import com.mcann.repository.UserRepository;
 import com.mcann.utility.enums.CardType;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,28 +44,18 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	
-	public User register(RegisterRequestDto dto){
-		return userRepository.save(User.builder()
-				                    .firstName(dto.getFirstName())
-				                    .lastName(dto.getLastName())
-				                    .address(dto.getAddress())
-				                    .email(dto.getEmail())
-				                    .username(dto.getUsername())
-				                    .password(dto.getPassword())
-				                       .phone(dto.getPhone())
-				                       .birthday(dto.getBirthday())
-				                    .build());
-		
+	public void register(RegisterRequestDto dto){
+		userRepository.save(UserMapper.INSTANCE.registerUser(dto));
 	}
 	
 //	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-	@Mappings({
+	/*@Mappings({
 			@Mapping(source = "isim",target = "firstName"),
 			@Mapping(source = "soyisim", target = "lastName"),
 			
 	})
 	public User update(UpdateUserProfileRequestDto dto){
 	
-	}
+	}*/
 	
 }
