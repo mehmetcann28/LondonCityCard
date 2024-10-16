@@ -35,5 +35,6 @@ public interface UserMapper {
 	
 	default LocalDate mapBirthday(int birthdayYear) {
 		// Yılı alıp sabit bir gün ve ay ile LocalDate oluşturuyoruz (01 Ocak)
+		//yorum
 		 return LocalDate.of(birthdayYear, 1, 1); }
 }
