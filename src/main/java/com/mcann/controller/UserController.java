@@ -24,15 +24,30 @@ public class UserController {
 	
 	@PostMapping(REGISTER)
 	public ResponseEntity<BaseResponse<Boolean>> register(@RequestBody RegisterRequestDto dto){
+		System.out.println("Received DTO: " + dto);
 		if (!dto.password().equals(dto.rePassword())){
 			throw new LondonCityCardException(ErrorType.INVALID_PASSWORD);
 		}
 		userService.register(dto);
+		System.out.println("Received DTO: " + dto);
 		return ResponseEntity.ok(
 				BaseResponse.<Boolean>builder()
 				            .code(200)
 				            .success(true)
 				            .message("Kayıt başarıyla gerçekleştirildi.")
+				            .data(true)
+				            .build()
+		);
+	}
+	
+	@DeleteMapping(DELETE)
+	public ResponseEntity<BaseResponse<Boolean>> deleteUser(@RequestBody Long id){
+		userService.deleteUser(id);
+		return ResponseEntity.ok(
+				BaseResponse.<Boolean>builder()
+				            .code(200)
+				            .message("Kullanıcı ve ona ait kart başarıyla silindi.")
+				            .success(true)
 				            .data(true)
 				            .build()
 		);

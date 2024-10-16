@@ -31,14 +31,14 @@ public class DataGenerator implements ApplicationRunner {
 //		addLine();
 //		cardUsageBalanceDeductionCard();
 	}
-	public String addCard() {
+	/*public String addCard() {
 		cardService.addCard(CardType.TEACHER);
 //		cardService.addCard(1L,"1234 3214 9654 8523", "050", CardType.STANDARD);
 //		cardService.addCard(1L,"3214 3214 8546 8523", "052", CardType.STUDENT);
 //		cardService.addCard(2L,"8526 3214 3256 8523", "054", CardType.ELDERLY);
 //		cardService.addCard(null,"1236 5478 9563 1234","561", CardType.STANDARD);
 		return "Card bilgileri eklendi.";
-	}
+	}*/
 	
 //	public String addUser(){
 //		userService.addUser("Mehmet", "Tufan", "m.tufan@gmail.com", "123456", "05225473366", "Adana", "mtufan",

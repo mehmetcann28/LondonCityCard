@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public interface UserMapper {
 	UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 	
+	@Mapping(source = "username", target = "username")
 	User registerUser(final RegisterRequestDto dto);
 //	@Mappings({
 //			@Mapping(source = "isim",target = "firstName"),

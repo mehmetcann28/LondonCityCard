@@ -6,8 +6,7 @@ public enum CardType {
 	DISCOUNTED(0,2),
 	TEACHER(0.6,1),
 	STUDENT(0.5,1),
-	ELDERLY(0.6,5),
-	DISABLED(0,10);
+	ELDERLY(0.6,5);
 	
 	private final int validityYears;
 	private final double discountRate;

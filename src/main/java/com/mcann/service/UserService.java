@@ -58,6 +58,16 @@ public class UserService {
 		userRepository.save(user);
 	}
 	
+	public void deleteUser(Long userId){
+		User user = userRepository.findById(userId)
+		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.USER_NOT_FOUND));
+		Long cardId = user.getCardId();
+		if (cardId != null) {
+			cardService.deleteCardById(cardId);
+		}
+		userRepository.deleteById(userId);
+	}
+	
 //	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 //	@Mappings({
 //     @Mapping(source = "kullaniciAdi", target = "username"),

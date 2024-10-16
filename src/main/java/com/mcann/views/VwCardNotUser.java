@@ -12,9 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Data
-public class VwCard {
-	String firstName;
-	String lastName;
+public class VwCardNotUser {
+	String cardNumber;
 	Double balance;
 	LocalDate expiryDate;
 	CardType cardType;

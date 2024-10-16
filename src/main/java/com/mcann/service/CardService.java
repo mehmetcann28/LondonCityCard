@@ -1,12 +1,17 @@
 package com.mcann.service;
 import static com.mcann.utility.Constant.*;
+
+import com.mcann.dto.request.AddCardRequestDto;
+import com.mcann.dto.request.DisableCardRequestDto;
 import com.mcann.entity.*;
 import com.mcann.exception.ErrorType;
 import com.mcann.exception.LondonCityCardException;
+import com.mcann.mapper.CardMapper;
 import com.mcann.repository.*;
-import com.mcann.utility.Constant;
 import com.mcann.utility.enums.*;
-import com.mcann.views.VwCard;
+import com.mcann.views.VwCardNotUser;
+import com.mcann.views.VwCardType;
+import com.mcann.views.VwCardUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,30 +32,27 @@ public class CardService {
 	public Card addUserCard(CardType cardType) {
 		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
 		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
-		Card card =
-				Card.builder()
-						.cardNumber(cardNumber)
-						.cvv(cvv)
-						.expiryDate(LocalDate.now().plusYears(cardType.getValidityYears()))
-						.cardType(cardType)
-				    .build();
+		LocalDate expiryDate = LocalDate.now().plusYears(cardType.getValidityYears());
+		Card card = CardMapper.INSTANCE.addUserCard(cardType);
+		card.setCardNumber(cardNumber);
+		card.setCvv(cvv);
+		card.setExpiryDate(expiryDate);
+		card.setCardType(cardType);
 		return cardRepository.save(card);
 	}
 	
-	public Card addCard(CardType cardType) {
-		if (cardType != CardType.STANDARD) {
+	public void addCard(AddCardRequestDto dto) {
+		if (dto.cardType() != CardType.STANDARD) {
 			throw new LondonCityCardException(ErrorType.INVALIDCARDTYPE_EXCEPTION);
 		}
 		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
 		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
-		Card card =
-				Card.builder()
-				    .cardNumber(cardNumber)
-				    .cvv(cvv)
-				    .expiryDate(LocalDate.now().plusYears(cardType.getValidityYears()))
-				    .cardType(cardType)
-				    .build();
-		return cardRepository.save(card);
+		LocalDate expiryDate = LocalDate.now().plusYears(dto.cardType().getValidityYears());
+		Card card = CardMapper.INSTANCE.addCard(dto);
+		card.setCardNumber(cardNumber);
+		card.setCvv(cvv);
+		card.setExpiryDate(expiryDate);
+		cardRepository.save(card);
 	}
 	
 	private static String convertToNumeric(String input) {
@@ -61,16 +63,60 @@ public class CardService {
 		return numericString.toString();
 	}
 	
+	public void deleteCardById(Long cardId) {
+		cardRepository.deleteById(cardId);
+	}
+	
 	public List<Card> getAllCards() {
 		return cardRepository.findAll();
 	}
 	
-	public List<VwCard> getAllVwCards() {
-		return cardRepository.getAllCard();
+	public List<VwCardUser> getUserVwCards() {
+		return cardRepository.findUserCards();
+	}
+	
+	public List<VwCardNotUser> getNotUserVwCards() {
+		return cardRepository.findNotUserCards();
+	}
+	
+	public List<VwCardType> getStandardVwCards() {
+		return cardRepository.findStandardCards();
+	}
+	
+	public List<VwCardType> getStudentVwCards() {
+		return cardRepository.findStudentCards();
+	}
+	
+	public List<VwCardType> getTeacherVwCards() {
+		return cardRepository.findTeacherCards();
+	}
+	
+	public List<VwCardType> getElderlyVwCards() {
+		return cardRepository.findElderlyCards();
+	}
+	
+	public List<VwCardType> getDiscountedVwCards() {
+		return cardRepository.findDiscountedCards();
+	}
+	
+	public List<Card> getActiveCards() {
+		return cardRepository.findActiveCards();
+	}
+	
+	public List<Card> getPassiveCards() {
+		return cardRepository.findPassiveCards();
 	}
 	
 	public Card getCardById(Long id) {
 		return cardRepository.findById(id).orElse(null);
+	}
+	
+	public void setDisabledCard(DisableCardRequestDto dto) {
+		Card card = cardRepository.findById(dto.cardId())
+		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
+		card.setState(State.PASSIVE);
+		card.setUpdateAt(LocalDate.now());
+		cardRepository.save(card);
 	}
 	
 	public Card balanceLoadCard(Long cardId, Double amount, PaymentType paymentType) {

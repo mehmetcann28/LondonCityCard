@@ -10,7 +10,8 @@ public record RegisterRequestDto(
 		String firstName,
 		@NotNull
 		String lastName,
-		@NotEmpty @Email
+		@NotEmpty
+		@Email
 		String email,
 		@NotEmpty(
 				message = "Bu alanı girmek zorunludur"
@@ -36,7 +37,7 @@ public record RegisterRequestDto(
 		String username,
 		@NotNull
 		LocalDate birthday,
-		CardType cardType,
-		String customField
+		CardType cardType
+//		String customField
 ) {
 }

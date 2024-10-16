@@ -30,5 +30,5 @@ public class User extends BaseEntity {
 	LocalDate birthday;
 	@Enumerated(EnumType.STRING)
 	CardType cardType;
-	String customField;
+//	String customField;
 }

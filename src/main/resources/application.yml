@@ -5,7 +5,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: ROOT
+    password: root
     url: jdbc:postgresql://localhost:5432/city_card_db
   jpa:
     hibernate:
