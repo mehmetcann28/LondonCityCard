@@ -11,6 +11,8 @@ import com.mcann.repository.UserRepository;
 import com.mcann.utility.enums.CardType;
 import com.mcann.views.VwUser;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,25 +24,25 @@ import java.util.List;
 public class UserService {
 	private final UserRepository userRepository;
 	private final CardService cardService;
-	//TODO Turist geldi standart kart aldı bunun için user bilgileri istenmesin.
-	public User addUser(String firstName, String lastName, String email, String password, String phone,
-	                    String address, String username, LocalDate birthday,CardType cardType) {
-		Card card = cardService.addUserCard(cardType);
-		User user = User.builder()
-				.firstName(firstName)
-				.lastName(lastName)
-				.address(address)
-				.email(email)
-				.birthday(birthday)
-				.username(username)
-				.password(password)
-				.phone(phone)
-				.cardId(card.getId())
-				.cardType(cardType)
-				        .build();
-		return userRepository.save(user);
-	}
 	
+//	public User addUser(String firstName, String lastName, String email, String password, String phone,
+//	                    String address, String username, LocalDate birthday,CardType cardType) {
+//		Card card = cardService.addUserCard(cardType);
+//		User user = User.builder()
+//				.firstName(firstName)
+//				.lastName(lastName)
+//				.address(address)
+//				.email(email)
+//				.birthday(birthday)
+//				.username(username)
+//				.password(password)
+//				.phone(phone)
+//				.cardId(card.getId())
+//				.cardType(cardType)
+//				        .build();
+//		return userRepository.save(user);
+//	}
+//
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
@@ -49,15 +51,20 @@ public class UserService {
 		return userRepository.getAllVwUsers();
 	}
 	
+	//TODO Turist geldi standart kart aldı bunun için user bilgileri istenmesin.
 	public void register(RegisterRequestDto dto){
-		userRepository.save(UserMapper.INSTANCE.registerUser(dto));
+		User user = UserMapper.INSTANCE.registerUser(dto);
+		user.setCardId(cardService.addUserCard(dto.cardType()).getId());
+		userRepository.save(user);
 	}
 	
 //	nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 //	@Mappings({
-//			@Mapping(source = "isim",target = "firstName"),
-//			@Mapping(source = "soyisim", target = "lastName"),
+//     @Mapping(source = "kullaniciAdi", target = "username"),
+//			@Mapping(source = "sifre",target = "password"),
+//
 //	})
+//@Mapping(source = "kullaniciAdi", target = "username")
 	public User update(UpdateUserProfileRequestDto dto){
 		User user = userRepository.findById(dto.id())
 		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.USER_NOT_FOUND));

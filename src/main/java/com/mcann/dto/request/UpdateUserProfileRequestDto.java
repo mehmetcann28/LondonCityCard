@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Size;
 public record UpdateUserProfileRequestDto(
 		Long id,
 		@Size(min = 2, max = 50)
-		String firstName,
+		String isim,
 		@Size(min = 2, max = 50)
-		String lastName,
+		String soyisim,
 		@Email
 		String email,
 		@NotEmpty
@@ -32,6 +32,8 @@ public record UpdateUserProfileRequestDto(
 		String password,
 		@NotEmpty(
 				message = "Bu alanı girmek zorunludur")
-		String rePassword
+		String rePassword,
+		Integer birthday,
+		String customField
 ) {
 }

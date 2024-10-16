@@ -40,15 +40,15 @@ public class DataGenerator implements ApplicationRunner {
 		return "Card bilgileri eklendi.";
 	}
 	
-	public String addUser(){
-		userService.addUser("Mehmet", "Tufan", "m.tufan@gmail.com", "123456", "05225473366", "Adana", "mtufan",
-		                    LocalDate.of(1992,10,10),CardType.STANDARD);
-		userService.addUser("Ozkan","Sargin","o.sargin@gmail.com","123456","05356998877","Karadag","osargin",
-		                    LocalDate.of(1991,2,14),CardType.ELDERLY);
-		userService.addUser("Mehmet Can","Karahan","mcan@gmail.com","123456","05368254788","Istanbul","mcan",
-		                    LocalDate.of(2000,6,19),CardType.STUDENT);
-		return "Kullanicilar eklendi";
-	}
+//	public String addUser(){
+//		userService.addUser("Mehmet", "Tufan", "m.tufan@gmail.com", "123456", "05225473366", "Adana", "mtufan",
+//		                    LocalDate.of(1992,10,10),CardType.STANDARD);
+//		userService.addUser("Ozkan","Sargin","o.sargin@gmail.com","123456","05356998877","Karadag","osargin",
+//		                    LocalDate.of(1991,2,14),CardType.ELDERLY);
+//		userService.addUser("Mehmet Can","Karahan","mcan@gmail.com","123456","05368254788","Istanbul","mcan",
+//		                    LocalDate.of(2000,6,19),CardType.STUDENT);
+//		return "Kullanicilar eklendi";
+//	}
 	
 	public String balanceLoadCard() throws Exception {
 		cardService.balanceLoadCard(100L,250d,PaymentType.CASH);

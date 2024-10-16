@@ -1,5 +1,6 @@
 package com.mcann.dto.request;
 
+import com.mcann.utility.enums.CardType;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
@@ -34,6 +35,8 @@ public record RegisterRequestDto(
 		@Size(min = 3, max = 64)
 		String username,
 		@NotNull
-		LocalDate birthday
+		LocalDate birthday,
+		CardType cardType,
+		String customField
 ) {
 }
