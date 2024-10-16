@@ -3,6 +3,7 @@ package com.mcann.controller;
 import static com.mcann.constant.RestApis.*;
 
 import com.mcann.dto.request.AddCardRequestDto;
+import com.mcann.dto.request.BalanceLoadCardRequestDto;
 import com.mcann.dto.request.DisableCardRequestDto;
 import com.mcann.dto.response.BaseResponse;
 import com.mcann.entity.Card;
@@ -35,6 +36,45 @@ public class CardController {
 							.success(true)
 							.data(true)
 						    .build()
+		);
+	}
+	
+	@DeleteMapping(DELETE)
+	public ResponseEntity<BaseResponse<Boolean>> deleteCard(@RequestBody Long id){
+		cardService.deleteCardById(id);
+		return ResponseEntity.ok(
+				BaseResponse.<Boolean>builder()
+				            .code(200)
+				            .message("Kart başarıyla silindi.")
+				            .success(true)
+				            .data(true)
+				            .build()
+		);
+	}
+	
+	@PostMapping(FINDBYID)
+	public ResponseEntity<BaseResponse<Card>> findById(@RequestBody Long id){
+		Card cardById = cardService.getCardById(id);
+		return ResponseEntity.ok(
+				BaseResponse.<Card>builder()
+				            .code(200)
+				            .message("Kart bilgileri başarıyla getirildi.")
+				            .success(true)
+				            .data(cardById)
+				            .build()
+		);
+	}
+	
+	@PostMapping(BALANCELOAD)
+	public ResponseEntity<BaseResponse<Card>> loadBalance(@RequestBody BalanceLoadCardRequestDto dto){
+		Card card = cardService.balanceLoadCard(dto);
+		return ResponseEntity.ok(
+				BaseResponse.<Card>builder()
+				            .code(200)
+				            .message("Kart bakiyesi başarıyla yüklendi.")
+				            .success(true)
+				            .data(card)
+				            .build()
 		);
 	}
 	
@@ -163,13 +203,6 @@ public class CardController {
 	public List<Card> getAllCards() {
 		return cardService.getAllCards();
 	}
-	
-	/*//TODO bu işlem user controller da çalışacak
-	@PostMapping(POSTADDCARD)
-	public String addCard(CardType cardType) {
-		cardService.addCard(cardType);
-		return "Kayıt başarılı";
-	}*/
 	
 	/*@GetMapping(GETCARDUSAGE)
 	public CardUsage getCardUsage() {

@@ -50,13 +50,13 @@ public class DataGenerator implements ApplicationRunner {
 //		return "Kullanicilar eklendi";
 //	}
 	
-	public String balanceLoadCard() throws Exception {
-		cardService.balanceLoadCard(100L,250d,PaymentType.CASH);
+//	public String balanceLoadCard() throws Exception {
+//		cardService.balanceLoadCard(100L,250d,PaymentType.CASH);
 //		cardService.balanceLoadCard(2L,500d,PaymentType.CASH);
 //		cardService.balanceLoadCard(3L,100d,PaymentType.CASH);
 //		cardService.balanceLoadCard(4L,100d,PaymentType.CASH);
-		return "Para Yuklendi";
-	}
+//		return "Para Yuklendi";
+//	}
 	public String cardUsageBalanceDeductionCard() throws Exception {
 		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.FIRST_TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);

@@ -2,6 +2,7 @@ package com.mcann.service;
 import static com.mcann.utility.Constant.*;
 
 import com.mcann.dto.request.AddCardRequestDto;
+import com.mcann.dto.request.BalanceLoadCardRequestDto;
 import com.mcann.dto.request.DisableCardRequestDto;
 import com.mcann.entity.*;
 import com.mcann.exception.ErrorType;
@@ -57,13 +58,21 @@ public class CardService {
 	
 	private static String convertToNumeric(String input) {
 		StringBuilder numericString = new StringBuilder();
+		int count = 0;
 		for (char c : input.toCharArray()) {
-			numericString.append((int) c % 10); // ASCII değerlerini sayısal karakterlere dönüştürme}
+			numericString.append((int) c % 10); // ASCII değerlerini sayısal karakterlere dönüştürme
+			count++;
+			
+			if (count % 4 == 0 && count != input.length()) {
+				numericString.append(" ");
+			}
 		}
 		return numericString.toString();
 	}
 	
 	public void deleteCardById(Long cardId) {
+		cardRepository.findById(cardId)
+		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
 		cardRepository.deleteById(cardId);
 	}
 	
@@ -108,7 +117,7 @@ public class CardService {
 	}
 	
 	public Card getCardById(Long id) {
-		return cardRepository.findById(id).orElse(null);
+		return cardRepository.findById(id).orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
 	}
 	
 	public void setDisabledCard(DisableCardRequestDto dto) {
@@ -119,18 +128,19 @@ public class CardService {
 		cardRepository.save(card);
 	}
 	
-	public Card balanceLoadCard(Long cardId, Double amount, PaymentType paymentType) {
-		Optional<Card> card = cardRepository.findById(cardId);
-		if (!card.isPresent()) {
+	public Card balanceLoadCard(BalanceLoadCardRequestDto dto) {
+		Optional<Card> cardOpt = cardRepository.findById(dto.cardId());
+		if (cardOpt.isEmpty()) {
 			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
 		}
-		Card cardValue = card.get();
-		cardValue.setBalance(cardValue.getBalance() + amount);
-		Card updatedCard = cardRepository.save(cardValue);
+		Card card = cardOpt.get();
 		
-		transactionService.balanceLoadCard(cardId, amount, paymentType);
+		Card updatedCard = CardMapper.INSTANCE.updateBalanceFromDto(dto, card);
 		
+		cardRepository.save(updatedCard);
+		transactionService.balanceLoadCard(dto.cardId(), dto.amount(), dto.paymentType());
 		return updatedCard;
+		
 	}
 	
 	public Card cardUsageBalanceDeductionCard(Long cardId, Long lineId, PaymentType paymentType,
