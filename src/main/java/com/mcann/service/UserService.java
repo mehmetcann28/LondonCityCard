@@ -60,7 +60,7 @@ public class UserService {
 //	})
 	public User update(UpdateUserProfileRequestDto dto){
 		User user = userRepository.findById(dto.id())
-		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
+		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.USER_NOT_FOUND));
 		return userRepository.save(UserMapper.INSTANCE.updateUser(dto, user));
 	}
 	
