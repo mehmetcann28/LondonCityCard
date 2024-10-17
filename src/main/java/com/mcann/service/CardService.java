@@ -31,44 +31,30 @@ public class CardService {
 	private final LineTransferService lineTransferService;
 	
 	public Card addUserCard(CardType cardType) {
-		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
-		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
-		LocalDate expiryDate = LocalDate.now().plusYears(cardType.getValidityYears());
-		Card card = CardMapper.INSTANCE.addUserCard(cardType);
-		card.setCardNumber(cardNumber);
-		card.setCvv(cvv);
-		card.setExpiryDate(expiryDate);
-		card.setCardType(cardType);
-		return cardRepository.save(card);
+//		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
+//		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
+//		LocalDate expiryDate = LocalDate.now().plusYears(cardType.getValidityYears());
+//		card.setCardNumber(cardNumber);
+//		card.setCvv(cvv);
+//		card.setExpiryDate(expiryDate);
+//		card.setCardType(cardType);
+		return cardRepository.save(CardMapper.INSTANCE.addUserCard(cardType));
 	}
 	
 	public void addCard(AddCardRequestDto dto) {
 		if (dto.cardType() != CardType.STANDARD) {
 			throw new LondonCityCardException(ErrorType.INVALIDCARDTYPE_EXCEPTION);
 		}
-		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
-		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
-		LocalDate expiryDate = LocalDate.now().plusYears(dto.cardType().getValidityYears());
-		Card card = CardMapper.INSTANCE.addCard(dto);
-		card.setCardNumber(cardNumber);
-		card.setCvv(cvv);
-		card.setExpiryDate(expiryDate);
-		cardRepository.save(card);
+//		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
+//		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
+//		LocalDate expiryDate = LocalDate.now().plusYears(dto.cardType().getValidityYears());
+//		card.setCardNumber(cardNumber);
+//		card.setCvv(cvv);
+//		card.setExpiryDate(expiryDate);
+		cardRepository.save(CardMapper.INSTANCE.addCard(dto));
 	}
 	
-	private static String convertToNumeric(String input) {
-		StringBuilder numericString = new StringBuilder();
-		int count = 0;
-		for (char c : input.toCharArray()) {
-			numericString.append((int) c % 10); // ASCII değerlerini sayısal karakterlere dönüştürme
-			count++;
-			
-			if (count % 4 == 0 && count != input.length()) {
-				numericString.append(" ");
-			}
-		}
-		return numericString.toString();
-	}
+	
 	
 	public void deleteCardById(Long cardId) {
 		cardRepository.findById(cardId)
