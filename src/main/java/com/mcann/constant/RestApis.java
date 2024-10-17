@@ -29,6 +29,7 @@ public class RestApis {
 	public static final String FINDALLPASSIVECARDS = "find-all-vw-passive-cards";
 	public static final String FINDALLACTIVECARDS = "find-all-vw-active-cards";
 	public static final String BALANCELOAD = "balance-load";
+	public static final String BALANCEDEDUCTION = "balance-deduction";
 	public static final String FINDALLRESPONSE = "/find-all-response";
 	public static final String UPDATE = "/update";
 	public static final String DISABLED = "/disabled";

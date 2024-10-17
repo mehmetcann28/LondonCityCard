@@ -57,8 +57,8 @@ public class DataGenerator implements ApplicationRunner {
 //		cardService.balanceLoadCard(4L,100d,PaymentType.CASH);
 //		return "Para Yuklendi";
 //	}
-	public String cardUsageBalanceDeductionCard() throws Exception {
-		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.FIRST_TRANSFER);
+//	public String cardUsageBalanceDeductionCard() throws Exception {
+//		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.FIRST_TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(3L,5L,PaymentType.CARD,TransitionType.TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(1L,6L,PaymentType.CARD,TransitionType.TRANSFER);
@@ -67,12 +67,12 @@ public class DataGenerator implements ApplicationRunner {
 //		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
 //		cardService.cardUsageBalanceDeductionCard(1L,1L,PaymentType.CARD,TransitionType.TRANSFER);
 		
-		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
-		cardService.cardUsageBalanceDeductionCard(2L,2L,PaymentType.CARD,TransitionType.TRANSFER);
-		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
-		cardService.cardUsageBalanceDeductionCard(2L,5L,PaymentType.CARD,TransitionType.TRANSFER);
-		return "Bakiyenizden para harcandı";
-	}
+//		cardService.cardUsageBalanceDeductionCard(2L,1L,PaymentType.CARD,TransitionType.INITIAL_USAGE);
+//		cardService.cardUsageBalanceDeductionCard(2L,2L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(2L,3L,PaymentType.CARD,TransitionType.TRANSFER);
+//		cardService.cardUsageBalanceDeductionCard(2L,5L,PaymentType.CARD,TransitionType.TRANSFER);
+//		return "Bakiyenizden para harcandı";
+//	}
 	
 //	public String addStation(){
 //		stationService.addStation("BeylikduzuSonDurak", "B-1", StationType.METROBUS,"Beylikduzu");

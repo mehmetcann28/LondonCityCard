@@ -3,6 +3,7 @@ import static com.mcann.utility.Constant.*;
 
 import com.mcann.dto.request.AddCardRequestDto;
 import com.mcann.dto.request.BalanceLoadCardRequestDto;
+import com.mcann.dto.request.CardUsageBalaceDeductionRequestDto;
 import com.mcann.dto.request.DisableCardRequestDto;
 import com.mcann.entity.*;
 import com.mcann.exception.ErrorType;
@@ -129,24 +130,23 @@ public class CardService {
 		
 	}
 	
-	public Card cardUsageBalanceDeductionCard(Long cardId, Long lineId, PaymentType paymentType,
-	                                          TransitionType transitionType) {
-		Optional<Card> card = cardRepository.findById(cardId);
+	public Card cardUsageBalanceDeductionCard(CardUsageBalaceDeductionRequestDto dto) {
+		Optional<Card> card = cardRepository.findById(dto.cardId());
 		if (!card.isPresent()) {
 			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
 		}
 		Card cardValue = card.get();
-		Double fee = calculateFee(cardValue, transitionType);
+		Double fee = calculateFee(cardValue, dto.transitionType());
 		if (cardValue.getBalance() < fee) {
 			throw new LondonCityCardException(ErrorType.YETERSIZ_BAKIYE_HATASI);
 		}
 		cardValue.setBalance(cardValue.getBalance() - fee);
-		Card updatedCard = cardRepository.save(cardValue);
-		transactionService.balanceDeductionCard(cardId,fee,paymentType);
+		Card updatedCard = CardMapper.INSTANCE.updateBalanceDeductionFromDto(dto);
+		transactionService.balanceDeductionCard(dto.cardId(),fee,dto.paymentType());
 		
-		if (transitionType == TransitionType.TRANSFER) {
+		if (dto.transitionType() == TransitionType.TRANSFER) {
 			// 1 saat içinde yapılan son kart kullanımını buluyoruz(INITIAL_USAGE kontrolü yapıyoruz)
-			Optional<CardUsage> lastInitialUsageOpt = cardUsageService.findByCardId(cardId);
+			Optional<CardUsage> lastInitialUsageOpt = cardUsageService.findByCardId(dto.cardId());
 			
 			if (lastInitialUsageOpt.isPresent()) {
 				CardUsage lastInitialUsage = lastInitialUsageOpt.get();
@@ -155,12 +155,12 @@ public class CardService {
 						Duration.between(lastInitialUsage.getCreateAt().atStartOfDay(), LocalDate.now().atStartOfDay())
 						        .toMinutes();
 				if (minutesBetween < 60) {
-					lineTransferService.handleTransfer(lastInitialUsage.getId(), cardValue, lineId);
+					lineTransferService.handleTransfer(lastInitialUsage.getId(), cardValue, dto.lineId());
 				}
 			}
 		}
 		
-		cardUsageService.cardUsageBalanceDeduction(cardId,transitionType,lineId);
+		cardUsageService.cardUsageBalanceDeduction(dto.cardId(), dto.transitionType(), dto.lineId());
 		
 		return updatedCard;
 	}

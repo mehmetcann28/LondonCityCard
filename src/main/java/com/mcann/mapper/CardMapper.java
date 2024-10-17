@@ -2,6 +2,7 @@ package com.mcann.mapper;
 
 import com.mcann.dto.request.AddCardRequestDto;
 import com.mcann.dto.request.BalanceLoadCardRequestDto;
+import com.mcann.dto.request.CardUsageBalaceDeductionRequestDto;
 import com.mcann.entity.Card;
 import com.mcann.utility.enums.CardType;
 import org.mapstruct.Mapper;
@@ -31,6 +32,8 @@ public interface CardMapper {
 	
 	@Mapping(target = "balance", expression = "java(card.getBalance() + dto.amount())")
 	Card updateBalanceFromDto(final BalanceLoadCardRequestDto dto, Card card);
+	@Mapping(target = "cardNumber",source = "cardNumber")
+	Card updateBalanceDeductionFromDto(final CardUsageBalaceDeductionRequestDto dto);
 	
 	default String generateCardNumber() {
 		return convertToNumeric(UUID.randomUUID().toString().substring(0, 16));

@@ -4,6 +4,7 @@ import static com.mcann.constant.RestApis.*;
 
 import com.mcann.dto.request.AddCardRequestDto;
 import com.mcann.dto.request.BalanceLoadCardRequestDto;
+import com.mcann.dto.request.CardUsageBalaceDeductionRequestDto;
 import com.mcann.dto.request.DisableCardRequestDto;
 import com.mcann.dto.response.BaseResponse;
 import com.mcann.entity.Card;
@@ -72,6 +73,19 @@ public class CardController {
 				BaseResponse.<Card>builder()
 				            .code(200)
 				            .message("Kart bakiyesi başarıyla yüklendi.")
+				            .success(true)
+				            .data(card)
+				            .build()
+		);
+	}
+	
+	@PostMapping(BALANCEDEDUCTION)
+	public ResponseEntity<BaseResponse<Card>> cardUsageBalanceDeduction(@RequestBody CardUsageBalaceDeductionRequestDto dto){
+		Card card = cardService.cardUsageBalanceDeductionCard(dto);
+		return ResponseEntity.ok(
+				BaseResponse.<Card>builder()
+				            .code(200)
+				            .message("Kart başarılı bir şekilde kullanıldı")
 				            .success(true)
 				            .data(card)
 				            .build()

@@ -25,7 +25,8 @@ public class TransactionService {
 				.cardId(cardId)
 				.amount(amount)
 				.transactionType(TransactionType.BALANCE_LOAD)
-				.paymentType(paymentType).build();
+				.paymentType(paymentType)
+				.build();
 		transactionRepository.save(transaction);
 	}
 	
