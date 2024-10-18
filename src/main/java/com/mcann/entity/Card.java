@@ -27,4 +27,5 @@ public class Card extends BaseEntity{
 	String cvv;
 	@Enumerated(EnumType.STRING)
 	CardType cardType;
+	Long paymentCardId;
 }

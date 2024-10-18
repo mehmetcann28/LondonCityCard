@@ -18,6 +18,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorMessage> runtimeExcepitonHandler(RuntimeException exception){
+		log.error("Hata detayları: ", exception);
 		return  createResponseEntity(ErrorType.INTERNAL_SERVER_ERROR,HttpStatus.INTERNAL_SERVER_ERROR,null);
 	}
 	

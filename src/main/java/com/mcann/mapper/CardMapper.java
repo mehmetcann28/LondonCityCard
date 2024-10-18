@@ -23,7 +23,7 @@ public interface CardMapper {
 	@Mapping(target = "expiryDate", expression = "java(generateExpiryDate(cardType))")
 	@Mapping(target = "cardType", source = "cardType")
 	Card addUserCard(final CardType cardType);
-	
+
 	@Mapping(target = "cardNumber",expression = "java(generateCardNumber())")
 	@Mapping(target = "cvv",expression = "java(generateCvv())")
 	@Mapping(target = "expiryDate", expression = "java(generateExpiryDate(dto.cardType()))")
@@ -32,7 +32,7 @@ public interface CardMapper {
 	
 	@Mapping(target = "balance", expression = "java(card.getBalance() + dto.amount())")
 	Card updateBalanceFromDto(final BalanceLoadCardRequestDto dto, Card card);
-	@Mapping(target = "cardNumber",source = "cardNumber")
+	
 	Card updateBalanceDeductionFromDto(final CardUsageBalaceDeductionRequestDto dto);
 	
 	default String generateCardNumber() {

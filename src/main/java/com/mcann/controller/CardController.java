@@ -2,10 +2,7 @@ package com.mcann.controller;
 
 import static com.mcann.constant.RestApis.*;
 
-import com.mcann.dto.request.AddCardRequestDto;
-import com.mcann.dto.request.BalanceLoadCardRequestDto;
-import com.mcann.dto.request.CardUsageBalaceDeductionRequestDto;
-import com.mcann.dto.request.DisableCardRequestDto;
+import com.mcann.dto.request.*;
 import com.mcann.dto.response.BaseResponse;
 import com.mcann.entity.Card;
 import com.mcann.service.CardService;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(CARD)
@@ -55,7 +53,7 @@ public class CardController {
 	
 	@PostMapping(FINDBYID)
 	public ResponseEntity<BaseResponse<Card>> findById(@RequestBody Long id){
-		Card cardById = cardService.getCardById(id);
+		Card cardById = cardService.findAll(id);
 		return ResponseEntity.ok(
 				BaseResponse.<Card>builder()
 				            .code(200)
@@ -80,14 +78,14 @@ public class CardController {
 	}
 	
 	@PostMapping(BALANCEDEDUCTION)
-	public ResponseEntity<BaseResponse<Card>> cardUsageBalanceDeduction(@RequestBody CardUsageBalaceDeductionRequestDto dto){
-		Card card = cardService.cardUsageBalanceDeductionCard(dto);
+	public ResponseEntity<BaseResponse<Boolean>> cardUsageBalanceDeduction(@RequestBody CardUsageBalaceDeductionRequestDto dto){
+		cardService.cardUsageBalanceDeductionCard(dto);
 		return ResponseEntity.ok(
-				BaseResponse.<Card>builder()
+				BaseResponse.<Boolean>builder()
 				            .code(200)
 				            .message("Kart başarılı bir şekilde kullanıldı")
 				            .success(true)
-				            .data(card)
+				            .data(true)
 				            .build()
 		);
 	}

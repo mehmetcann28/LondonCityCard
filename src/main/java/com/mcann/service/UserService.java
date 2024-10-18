@@ -50,7 +50,7 @@ public class UserService {
 	public List<VwUser> getAllVwUser() {
 		return userRepository.getAllVwUsers();
 	}
-	
+	@Deprecated
 	//TODO Turist geldi standart kart aldı bunun için user bilgileri istenmesin.
 	public void register(RegisterRequestDto dto){
 		User user = UserMapper.INSTANCE.registerUser(dto);

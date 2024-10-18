@@ -15,7 +15,9 @@ public enum ErrorType {
 	CARD_NOT_FOUND(5003,"Kart bulunamadı",HttpStatus.BAD_REQUEST),
 	TRANSITION_NOT_FOUND(6001,"Geçersiz işlem türü.",HttpStatus.BAD_REQUEST),
 	STATION_NOT_FOUND(7001,"Durak bulunamadı",HttpStatus.BAD_REQUEST),
-	INVALID_PASSWORD(8001,"Şifreler uyuşmamaktadır",HttpStatus.BAD_REQUEST);
+	CARD_USAGE_NOT_FOUND(8001,"Son kart kullanımı bulunamadı",HttpStatus.BAD_REQUEST),
+	PAYMENT_CARD_NOT_FOUND(3001,"Kredi veya banka kartı bulunamadı",HttpStatus.BAD_REQUEST),
+	INVALID_PASSWORD(8002,"Şifreler uyuşmamaktadır",HttpStatus.BAD_REQUEST);
 	
 	
 	

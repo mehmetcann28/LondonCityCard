@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,5 +19,5 @@ public class VwTransaction {
 	Double amount;
 	PaymentType paymentType;
 	TransactionType transactionType;
-	LocalDate transactionDate;
+	LocalDateTime transactionDate;
 }

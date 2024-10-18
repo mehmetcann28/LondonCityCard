@@ -1,16 +1,18 @@
 package com.mcann.dto.request;
 
 import com.mcann.utility.enums.PaymentType;
-import com.mcann.utility.enums.TransitionType;
 import jakarta.validation.constraints.NotNull;
 
-public record CardUsageBalaceDeductionRequestDto(
+public record AddPaymentCardRequestDto(
 		@NotNull
-		Long cardId,
+		String cardNumber,
 		@NotNull
-		Long lineId,
+		String cardHolderName,
+		@NotNull
+		String expiryDate,
+		@NotNull
+		String cvv,
 		@NotNull
 		PaymentType paymentType
-//		Long paymentCardId
 ) {
 }

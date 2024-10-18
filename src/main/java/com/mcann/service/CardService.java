@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +31,9 @@ public class CardService {
 	private final TransactionService transactionService;
 	private final CardUsageService cardUsageService;
 	private final LineTransferService lineTransferService;
-	
+	private final PaymentCardService paymentCardService;
+
+
 	public Card addUserCard(CardType cardType) {
 //		String cardNumber = convertToNumeric(UUID.randomUUID().toString().substring(0,16));
 //		String cvv = convertToNumeric(UUID.randomUUID().toString().substring(0,3));
@@ -41,7 +44,7 @@ public class CardService {
 //		card.setCardType(cardType);
 		return cardRepository.save(CardMapper.INSTANCE.addUserCard(cardType));
 	}
-	
+
 	public void addCard(AddCardRequestDto dto) {
 		if (dto.cardType() != CardType.STANDARD) {
 			throw new LondonCityCardException(ErrorType.INVALIDCARDTYPE_EXCEPTION);
@@ -55,7 +58,32 @@ public class CardService {
 		cardRepository.save(CardMapper.INSTANCE.addCard(dto));
 	}
 	
+//	public void processCardUsage(Long cardId){
+//		Optional<Card> cardOpt = cardRepository.findById(cardId);
+//		if (!cardOpt.isPresent()) {
+//			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
+//		}
+//		Card card = cardOpt.get();
+//			if (card.getPaymentCardId() != null) {
+//				Optional<PaymentCard> paymentCardOpt = paymentCardService.getPaymentCardById(card.getPaymentCardId());
+//				if(paymentCardOpt.isPresent()){
+//					paymentCardOpt.get();
+//				}
+//			}
+//		}
 	
+//	public void associatePaymentCardWithCard(Long cardId, Long paymentCardId) {
+//		// Ulaşım kartını bul
+//		Optional<Card> cardOpt = cardRepository.findById(cardId);
+//		if (!cardOpt.isPresent()) {
+//			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
+//		}
+//
+//		// Kartı güncelle ve paymentCardId'yi ilişkilendir
+//		Card card = cardOpt.get();
+//		card.setPaymentCardId(paymentCardId);
+//		cardRepository.save(card);  // Güncellenmiş kartı kaydet
+//	}
 	
 	public void deleteCardById(Long cardId) {
 		cardRepository.findById(cardId)
@@ -103,31 +131,36 @@ public class CardService {
 		return cardRepository.findPassiveCards();
 	}
 	
-	public Card getCardById(Long id) {
+	public Optional<Card> getCardById(Long id) {
+		return cardRepository.getCardById(id);
+	}
+	
+	public Card findAll(Long id) {
 		return cardRepository.findById(id).orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
 	}
+	
 	
 	public void setDisabledCard(DisableCardRequestDto dto) {
 		Card card = cardRepository.findById(dto.cardId())
 		                          .orElseThrow(() -> new LondonCityCardException(ErrorType.CARD_NOT_FOUND));
 		card.setState(State.PASSIVE);
-		card.setUpdateAt(LocalDate.now());
+		card.setUpdateAt(LocalDateTime.now());
 		cardRepository.save(card);
 	}
-	
+
 	public Card balanceLoadCard(BalanceLoadCardRequestDto dto) {
 		Optional<Card> cardOpt = cardRepository.findById(dto.cardId());
 		if (cardOpt.isEmpty()) {
 			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
 		}
 		Card card = cardOpt.get();
-		
+
 		Card updatedCard = CardMapper.INSTANCE.updateBalanceFromDto(dto, card);
-		
+
 		cardRepository.save(updatedCard);
 		transactionService.balanceLoadCard(dto.cardId(), dto.amount(), dto.paymentType());
 		return updatedCard;
-		
+
 	}
 	
 	public Card cardUsageBalanceDeductionCard(CardUsageBalaceDeductionRequestDto dto) {
@@ -136,31 +169,57 @@ public class CardService {
 			throw new LondonCityCardException(ErrorType.CARD_NOT_FOUND);
 		}
 		Card cardValue = card.get();
-		Double fee = calculateFee(cardValue, dto.transitionType());
-		if (cardValue.getBalance() < fee) {
+//		Double fee = calculateFee(cardValue, dto.transitionType());
+//		if (cardValue.getBalance() < fee) {
+//			throw new LondonCityCardException(ErrorType.YETERSIZ_BAKIYE_HATASI);
+//		}
+//		cardValue.setBalance(cardValue.getBalance() - fee);
+//		Card updatedCard = CardMapper.INSTANCE.updateBalanceDeductionFromDto(dto);
+//		transactionService.balanceDeductionCard(dto.cardId(),fee,dto.paymentType());
+//
+//		if (dto.transitionType() == TransitionType.TRANSFER) {
+//			// 1 saat içinde yapılan son kart kullanımını buluyoruz(INITIAL_USAGE kontrolü yapıyoruz)
+//			Optional<CardUsage> lastInitialUsageOpt = cardUsageService.findByCardId(dto.cardId());
+//
+//			if (lastInitialUsageOpt.isPresent()) {
+//				CardUsage lastInitialUsage = lastInitialUsageOpt.get();
+//				//Geçen süreyi hesaplama dk cinsinden
+//				Long minutesBetween =
+//						Duration.between(lastInitialUsage.getCreateAt().atStartOfDay(), LocalDate.now().atStartOfDay())
+//						        .toMinutes();
+//				if (minutesBetween < 60) {
+//					lineTransferService.handleTransfer(lastInitialUsage.getId(), cardValue, dto.lineId());
+//				}
+//			}
+//		}
+//
+//		cardUsageService.cardUsageBalanceDeduction(dto.cardId(), dto.transitionType(), dto.lineId());
+//
+//		return updatedCard;
+		LocalDateTime now = LocalDateTime.now();
+		Optional<CardUsage> lastUsageOpt = cardUsageService.findByCardId(dto.cardId());
+		
+		TransitionType transitionType = cardUsageService.determineTransitionType(lastUsageOpt, now);
+		
+//		if (dto.paymentType() == PaymentType.CARD) {
+//			processCardUsage(dto.cardId());  // Kartın bir PaymentCard ile ilişkilendirilip ilişkilendirilmediğini kontrol eder
+//		}
+		
+		Double fee = calculateFee(cardValue, transitionType);
+		if (cardValue.getBalance()<fee){
 			throw new LondonCityCardException(ErrorType.YETERSIZ_BAKIYE_HATASI);
 		}
+		
 		cardValue.setBalance(cardValue.getBalance() - fee);
 		Card updatedCard = CardMapper.INSTANCE.updateBalanceDeductionFromDto(dto);
-		transactionService.balanceDeductionCard(dto.cardId(),fee,dto.paymentType());
 		
-		if (dto.transitionType() == TransitionType.TRANSFER) {
-			// 1 saat içinde yapılan son kart kullanımını buluyoruz(INITIAL_USAGE kontrolü yapıyoruz)
-			Optional<CardUsage> lastInitialUsageOpt = cardUsageService.findByCardId(dto.cardId());
-			
-			if (lastInitialUsageOpt.isPresent()) {
-				CardUsage lastInitialUsage = lastInitialUsageOpt.get();
-				//Geçen süreyi hesaplama dk cinsinden
-				Long minutesBetween =
-						Duration.between(lastInitialUsage.getCreateAt().atStartOfDay(), LocalDate.now().atStartOfDay())
-						        .toMinutes();
-				if (minutesBetween < 60) {
-					lineTransferService.handleTransfer(lastInitialUsage.getId(), cardValue, dto.lineId());
-				}
-			}
+		transactionService.balanceDeductionCard(dto.cardId(),fee,dto.paymentType());
+		if (transitionType == TransitionType.TRANSFER) {
+			CardUsage lastInitialUsage = lastUsageOpt.get();
+			lineTransferService.handleTransfer(lastInitialUsage.getId(), cardValue, dto.lineId());
 		}
 		
-		cardUsageService.cardUsageBalanceDeduction(dto.cardId(), dto.transitionType(), dto.lineId());
+		cardUsageService.cardUsageBalanceDeduction(dto.cardId(), transitionType, dto.lineId());
 		
 		return updatedCard;
 	}
@@ -179,16 +238,13 @@ public class CardService {
 	}
 	
 	private Double calculateTransferFee(Card card, LineTransferType lineTransferType) {
-		switch (lineTransferType) {
-			case FIRST_TRANSFER:
-				return FIRSTTRANSFERFEE;
-			case SECOND_TRANSFER:
-				return SECONDTRANSFERFEE;
-			case THIRD_TRANSFER:
-				return THIRDTRANSFERFEE;
-			default:
-				return THIRDTRANSFERFEE;
-		}
+		return switch (lineTransferType) {
+			case FIRST_TRANSFER -> FIRSTTRANSFERFEE;
+			case SECOND_TRANSFER -> SECONDTRANSFERFEE;
+			default -> THIRDTRANSFERFEE;
+		};
 	}
+	
+	
 	
 }

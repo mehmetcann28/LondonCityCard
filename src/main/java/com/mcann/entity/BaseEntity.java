@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public abstract class BaseEntity {
 	@Enumerated(EnumType.STRING)
 	State state = State.ACTIVE;
 	@Builder.Default
-	LocalDate createAt = LocalDate.now();
+	LocalDateTime createAt = LocalDateTime.now();
 	@Builder.Default
-	LocalDate updateAt = LocalDate.now();
+	LocalDateTime updateAt = LocalDateTime.now();
 }
