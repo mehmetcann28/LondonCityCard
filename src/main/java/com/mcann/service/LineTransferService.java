@@ -24,8 +24,9 @@ public class LineTransferService {
 	
 	public void handleTransfer(Long firstCardUsageId, Card card, Long nextLineId) {
 		LineTransferType lineTransferType = determineTransferType(firstCardUsageId);
-		System.out.println("Şuan en son yazdığım");
-		Optional<CardUsage> firstCardUsageOpt = cardUsageService.findLastUsageByCardId(firstCardUsageId);
+		System.out.println("Card id si: "+card.getId());
+		System.out.println("firstCardUsageId si: "+firstCardUsageId);
+		Optional<CardUsage> firstCardUsageOpt = cardUsageService.findLastUsageByCardId(card.getId());
 		if (!firstCardUsageOpt.isPresent()) {
 			throw new LondonCityCardException(ErrorType.CARD_USAGE_NOT_FOUND);
 		}

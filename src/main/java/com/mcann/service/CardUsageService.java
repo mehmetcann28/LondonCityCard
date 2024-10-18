@@ -24,7 +24,6 @@ public class CardUsageService {
 	
 	// Kartın en son kullanımını bulma
 	public Optional<CardUsage> findLastUsageByCardId(Long cardId) {
-		System.out.println("Şuan buradayız");
 		return cardUsageRepository.findLastCardUsageByCardId(cardId);
 	}
 	

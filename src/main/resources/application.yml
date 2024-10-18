@@ -4,10 +4,15 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: root
-    url: jdbc:postgresql://localhost:5432/city_card_db
+    username: ${CITY_CARD_POSTGRE_USERNAME}
+    password: ${CITY_CARD_POSTGRE_PASSWORD}
+    url: ${CITY_CARD_POSTGRE_URL}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+city-card:
+  jwt:
+    secret-key: ${CITY_CARD_JWT_SECRETKEY}
+    issuer: ${CITY_CARD_JWT_ISSUER}

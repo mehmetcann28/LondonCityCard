@@ -16,6 +16,8 @@ public class RestApis {
 	public static final String LINE = ROOT + "/line";
 	public static final String TRANSACTION = ROOT + "/transaction";
 	
+	public static final String DOLOGIN = "/dologin";
+	public static final String GETPROFILE = "/get-profile";
 	public static final String ADD = "/add";
 	public static final String DELETE = "/delete";
 	public static final String FINDALL = "/find-all";

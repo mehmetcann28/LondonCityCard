@@ -2,6 +2,7 @@ package com.mcann.controller;
 
 import static com.mcann.constant.RestApis.*;
 
+import com.mcann.dto.request.DoLoginRequestDto;
 import com.mcann.dto.request.RegisterRequestDto;
 import com.mcann.dto.request.UpdateUserProfileRequestDto;
 import com.mcann.dto.response.BaseResponse;
@@ -10,6 +11,7 @@ import com.mcann.exception.ErrorType;
 import com.mcann.exception.LondonCityCardException;
 import com.mcann.service.UserService;
 import com.mcann.views.VwUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,31 @@ public class UserController {
 				            .success(true)
 				            .message("Kayıt başarıyla gerçekleştirildi.")
 				            .data(true)
+				            .build()
+		);
+	}
+	
+	@PostMapping(DOLOGIN)
+	public ResponseEntity<BaseResponse<String>> doLogin(@RequestBody @Valid DoLoginRequestDto dto){
+		String token = userService.doLogin(dto);
+		return ResponseEntity.ok(
+				BaseResponse.<String>builder()
+				            .message("Giriş başarılı")
+				            .code(200)
+				            .data(token)
+				            .success(true)
+				            .build()
+		);
+	}
+	
+	@GetMapping(GETPROFILE)
+	public ResponseEntity<BaseResponse<User>> getProfile(String token){
+		return ResponseEntity.ok(
+				BaseResponse.<User>builder()
+				            .code(200)
+				            .data(userService.getProfile(token))
+				            .message("Profil bilgisi getirildi")
+				            .success(true)
 				            .build()
 		);
 	}
